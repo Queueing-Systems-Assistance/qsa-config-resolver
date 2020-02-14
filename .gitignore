@@ -1,0 +1,9 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+# Gradle
+classes/
+.gradle
+!gradle-wrapper.jar
+# Builds
+**/build/**
