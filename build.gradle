@@ -11,11 +11,11 @@ ext {
 	projectGroup = 'com.unideb.qsa'
 	projectMajorVersion = '1'
 	projectMinorVersion = '0'
-	projectBuildVersion = System.getenv('TRAVIS_BUILD_NUMBER') ? System.getenv('TRAVIS_BUILD_NUMBER') : '0-SNAPSHOT'
+	projectBuildVersion = System.getenv('TRAVIS_BUILD_NUMBER') ?: '0-SNAPSHOT'
 	projectVersion = projectMajorVersion + '.' + projectMinorVersion + '.' + projectBuildVersion
 	/* Secrets */
-	githubToken = System.getenv('GITHUB_TOKEN')
-	githubUsername = System.getenv('GITHUB_USERNAME')
+	githubToken = System.getenv('GITHUB_TOKEN') ?: ''
+	githubUsername = System.getenv('GITHUB_USERNAME') ?: ''
 }
 
 group = projectGroup
