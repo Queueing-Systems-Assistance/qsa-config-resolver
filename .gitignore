@@ -1,0 +1,22 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+# Gradle
+classes/
+.gradle
+!gradle-wrapper.jar
+# Builds
+**/build/**
+**/node_modules/**
+**/out/**
+**/dist/**
+# Application downloaded resources
+/resources/**
+**/logs/**
+# Frontend Test Results
+**/cypress/videos/**
+**/cypress/screenshots/**
+**/cypress/fixtures/**
+**/qsa-application-frontend/.nyc_output
+**/qsa-application-frontend/coverage/*
+**/qsa-application-frontend/instrumented/*

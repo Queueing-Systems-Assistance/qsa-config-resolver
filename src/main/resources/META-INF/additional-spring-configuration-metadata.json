@@ -1,0 +1,10 @@
+{
+	"properties": [
+		{
+			"name": "qsa.config.uris",
+			"type": "java.lang.String",
+			"description": "Config packs in a list, separated by comma.",
+			"defaultValue": ""
+		}
+	]
+}

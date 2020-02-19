@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+		"-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+		"https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+	<!-- Test files -->
+	<suppress checks="MagicNumber" files=".*[/\\]*Test.java" />
+	<suppress checks="JavadocMethod" files=".*[/\\]*Test.java" />
+	<suppress checks="JavadocType" files=".*[/\\]*Test.java" />
+	<suppress checks="JavadocMethod" files="com.unideb.qsa.server.integration" />
+	<suppress checks="VisibilityModifier" files="com.unideb.qsa.server.integration" />
+	<suppress checks="ConstantName" files="com.unideb.qsa.server.integration" />
+	<suppress checks="JavadocMethod" files="com.unideb.qsa.server.ApplicationTest" />
+	<suppress checks="VisibilityModifier" files="com.unideb.qsa.server.ApplicationTest" />
+	<!-- Classes -->
+	<suppress checks="[a-zA-Z0-9]*" files=".*[/\\]Q[A-Z].*.java" />
+	<!-- Aspects -->
+	<suppress checks="IllegalThrows" files=".*[/\\]*Aspect.java" />
+	<!-- System Services -->
+	<suppress checks="FileLength" files="com.unideb.qsa.implementation" />
+	<suppress checks="MethodName" files="com.unideb.qsa.implementation" />
+	<suppress checks="IllegalImport" files="com.unideb.qsa.implementation" />
+	<suppress checks="ParameterName" files="com.unideb.qsa.implementation" />
+	<!-- Domain classes -->
+	<suppress checks="MemberName" files="com.unideb.qsa.domain" />
+	<suppress checks="JavadocMethod" files="com.unideb.qsa.domain" />
+	<suppress checks="CyclomaticComplexity" files="com.unideb.qsa.domain" />
+	<suppress checks="NPathComplexity" files="com.unideb.qsa.domain" />
+	<!-- Application -->
+	<suppress checks="JavadocType" files="com.unideb.qsa.config.resolver.Application" />
+	<suppress checks="HideUtilityClassConstructor" files="com.unideb.qsa.config.resolver.Application" />
+	<suppress checks="JavadocMethod" files="com.unideb.qsa.config.resolver.Application" />
+</suppressions>
