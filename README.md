@@ -1,6 +1,6 @@
-# QSA Config Resolver [![Build Status Develop](https://travis-ci.com/Queueing-Systems-Assistance/qsa-config-resolve.svg?branch=master)](https://travis-ci.com/Queueing-Systems-Assistance/qsa-config-resolver)
+# QSA Config Resolver [![Build Status Develop](https://travis-ci.com/Queueing-Systems-Assistance/qsa-config-resolver.svg?branch=master)](https://travis-ci.com/Queueing-Systems-Assistance/qsa-config-resolver)
 
-**QSA Config Resolver** resolves the a config with the given conditions. You can use this by adding as a dependency and including your `pom.xml` or `build.gradle` the following configuration:
+**QSA Config Resolver** resolves a config with the given conditions. You can use this by adding as a dependency and including your `pom.xml` or `build.gradle` the following configuration:
 
 1. Add the following dependencies to your project:
 - Maven:
@@ -39,6 +39,3 @@ class YourClass {
 
 }
 ```
-
-For those who want to help to develop the framework:
-- [Git workflow](https://github.com/Queueing-Systems-Assistance/qsa-application/docs/git-workflow.md)
