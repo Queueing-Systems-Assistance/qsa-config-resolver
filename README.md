@@ -7,6 +7,5 @@
 - Config Resolver (for resolving the configs)
 
 For those who want to help to develop the framework:
-- [Git workflow](https://github.com/Queueing-Systems-Assistance/qsa-application/docs/git-workflow.md)
 - Use `gradle clean build` to build the project
 - If you want to deploy it into your local repository, issue `gradle clean install`
