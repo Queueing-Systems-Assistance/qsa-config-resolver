@@ -1,9 +1,8 @@
 package com.unideb.qsa.domain.context;
 
+import java.util.Map;
 import java.util.Objects;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 
 import com.unideb.qsa.domain.exception.ConfigValueException;
 
@@ -16,9 +15,9 @@ public final class ConfigValue {
     private static final String QUALIFIERS_EXCEPTION = "ConfigValue 'qualifiers' must not be null";
 
     private final String value;
-    private final ImmutableMap<String, ImmutableSet<String>> qualifiers;
+    private final Map<String, Set<String>> qualifiers;
 
-    public ConfigValue(String value, ImmutableMap<String, ImmutableSet<String>> qualifiers) {
+    public ConfigValue(String value, Map<String, Set<String>> qualifiers) {
         if (value == null) {
             throw new ConfigValueException(VALUE_EXCEPTION);
         }
@@ -60,7 +59,7 @@ public final class ConfigValue {
         return value;
     }
 
-    public ImmutableMap<String, ImmutableSet<String>> getQualifiers() {
+    public Map<String, Set<String>> getQualifiers() {
         return qualifiers;
     }
 }

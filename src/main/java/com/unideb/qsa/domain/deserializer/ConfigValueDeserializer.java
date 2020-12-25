@@ -3,11 +3,12 @@ package com.unideb.qsa.domain.deserializer;
 import static com.unideb.qsa.domain.deserializer.DeserializationConstants.VALUE_ELEMENT;
 
 import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -23,24 +24,21 @@ import com.unideb.qsa.domain.exception.ConfigValueException;
 public class ConfigValueDeserializer implements JsonDeserializer<ConfigValue> {
 
     private static final String VALUE_EXCEPTION = "'value' is missing value attribute: %s";
-    private static Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 
     @Override
     public ConfigValue deserialize(JsonElement jsonElement, Type typeOfSrc, JsonDeserializationContext jsonDeserializationContext) {
         String value = getValue(jsonElement);
-        ImmutableMap<String, ImmutableSet<String>> qualifiers = getQualifiers(jsonElement, jsonDeserializationContext);
+        Map<String, Set<String>> qualifiers = getQualifiers(jsonElement, jsonDeserializationContext);
         return new ConfigValue(value, qualifiers);
     }
 
-    private ImmutableMap<String, ImmutableSet<String>> getQualifiers(JsonElement jsonElement, JsonDeserializationContext context) {
-        ImmutableMap.Builder<String, ImmutableSet<String>> qualifiersMapBuilder = new ImmutableMap.Builder<>();
-        jsonElement.getAsJsonObject()
-                   .entrySet()
-                   .stream()
-                   .filter(entry -> !entry.getKey().equals(VALUE_ELEMENT))
-                   .forEach(entry -> qualifiersMapBuilder.put(entry.getKey(),
-                           new ImmutableSet.Builder<String>().addAll((Set<String>) context.deserialize(entry.getValue(), Set.class)).build()));
-        return qualifiersMapBuilder.build();
+    private Map<String, Set<String>> getQualifiers(JsonElement jsonElement, JsonDeserializationContext context) {
+        return jsonElement.getAsJsonObject()
+                          .entrySet()
+                          .stream()
+                          .filter(entry -> !entry.getKey().equals(VALUE_ELEMENT))
+                          .collect(Collectors.toMap(Entry::getKey, entry -> new HashSet<>(context.deserialize(entry.getValue(), Set.class))));
     }
 
     private String getValue(JsonElement jsonElement) {
@@ -50,7 +48,7 @@ public class ConfigValueDeserializer implements JsonDeserializer<ConfigValue> {
                           .filter(entry -> entry.getKey().equals(VALUE_ELEMENT))
                           .findAny()
                           .map(Entry::getValue)
-                          .map(valueJsonElement -> valueJsonElement.isJsonPrimitive() ? valueJsonElement.getAsString() : gson.toJson(valueJsonElement))
+                          .map(valueJsonElement -> valueJsonElement.isJsonPrimitive() ? valueJsonElement.getAsString() : GSON.toJson(valueJsonElement))
                           .orElseThrow(() -> new ConfigValueException(String.format(VALUE_EXCEPTION, jsonElement.toString())));
     }
 }

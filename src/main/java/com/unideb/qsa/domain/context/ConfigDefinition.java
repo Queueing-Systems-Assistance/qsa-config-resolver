@@ -1,9 +1,8 @@
 package com.unideb.qsa.domain.context;
 
+import java.util.Map;
 import java.util.Objects;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSortedSet;
+import java.util.Set;
 
 import com.unideb.qsa.domain.exception.ConfigDefinitionException;
 
@@ -15,10 +14,10 @@ public final class ConfigDefinition {
     private static final String NAME_EXCEPTION = "ConfigDefinition 'name' must not be null";
 
     private final String name;
-    private final ImmutableSortedSet<ConfigValue> configValues;
-    private final ImmutableMap<String, String> qualifiers;
+    private final Set<ConfigValue> configValues;
+    private final Map<String, String> qualifiers;
 
-    public ConfigDefinition(String name, ImmutableSortedSet<ConfigValue> configValues, ImmutableMap<String, String> qualifiers) {
+    public ConfigDefinition(String name, Set<ConfigValue> configValues, Map<String, String> qualifiers) {
         if (name == null) {
             throw new ConfigDefinitionException(NAME_EXCEPTION);
         }
@@ -59,11 +58,11 @@ public final class ConfigDefinition {
         return name;
     }
 
-    public ImmutableSortedSet<ConfigValue> getConfigValues() {
+    public Set<ConfigValue> getConfigValues() {
         return configValues;
     }
 
-    public ImmutableMap<String, String> getQualifiers() {
+    public Map<String, String> getQualifiers() {
         return qualifiers;
     }
 

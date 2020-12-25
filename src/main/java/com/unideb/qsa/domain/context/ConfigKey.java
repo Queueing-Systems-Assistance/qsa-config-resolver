@@ -1,8 +1,7 @@
 package com.unideb.qsa.domain.context;
 
+import java.util.Map;
 import java.util.Objects;
-
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Immutable object for representing a config name and qualifiers.
@@ -10,7 +9,7 @@ import com.google.common.collect.ImmutableMap;
 public final class ConfigKey {
 
     private final String configName;
-    private final ImmutableMap<String, String> qualifiers;
+    private final Map<String, String> qualifiers;
 
     public ConfigKey(String configName) {
         this(configName, null);
@@ -20,9 +19,9 @@ public final class ConfigKey {
         this(configDefinition.getName(), configDefinition.getQualifiers());
     }
 
-    public ConfigKey(String configName, ImmutableMap<String, String> qualifiers) {
+    public ConfigKey(String configName, Map<String, String> qualifiers) {
         this.configName = configName;
-        this.qualifiers = (qualifiers != null) ? qualifiers : ImmutableMap.of();
+        this.qualifiers = (qualifiers != null) ? qualifiers : Map.of();
     }
 
     @Override
@@ -55,7 +54,7 @@ public final class ConfigKey {
         return configName;
     }
 
-    public ImmutableMap<String, String> getQualifiers() {
+    public Map<String, String> getQualifiers() {
         return qualifiers;
     }
 }

@@ -25,7 +25,6 @@ public final class JsonDeserializerHelper {
 
     /**
      * Deserialize a given string to {@link ConfigDefinition}.
-     *
      * @param fileContent The fileContent to deserialize.
      * @return instance of {@link ConfigDefinition}.
      */
@@ -35,7 +34,6 @@ public final class JsonDeserializerHelper {
 
     /**
      * Deserialize a given string to a {@link ConfigPack}.
-     *
      * @param configPackJson The configPackJson to deserialize.
      * @return instance of {@link ConfigPack}.
      */
@@ -45,7 +43,6 @@ public final class JsonDeserializerHelper {
 
     /**
      * Deserialize a given json arrays into a {@link ConfigPack}.
-     *
      * @param configJsonArray as json array
      * @return instance of {@link ConfigPack}
      */

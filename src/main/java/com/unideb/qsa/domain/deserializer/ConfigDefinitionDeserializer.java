@@ -8,13 +8,12 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSortedSet;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -44,8 +43,8 @@ public class ConfigDefinitionDeserializer implements JsonDeserializer<ConfigDefi
         populateElements(jsonElement, context, elements);
 
         String configName = (String) elements.get(CONFIG_ELEMENT).getValue();
-        ImmutableMap<String, String> qualifiers = getQualifiers(jsonElement, elements);
-        ImmutableSortedSet<ConfigValue> configValues = getConfigValues(elements);
+        Map<String, String> qualifiers = getQualifiers(jsonElement, elements);
+        Set<ConfigValue> configValues = getConfigValues(elements);
         return new ConfigDefinition(configName, configValues, qualifiers);
     }
 
@@ -65,26 +64,22 @@ public class ConfigDefinitionDeserializer implements JsonDeserializer<ConfigDefi
                    .forEach(entry -> elements.get(entry.getKey()).populate(entry.getValue(), context));
     }
 
-    private ImmutableMap<String, String> getQualifiers(JsonElement jsonElement, Map<String, ConfigDefinitionElement<?>> elements) {
-        ImmutableMap.Builder<String, String> qualifiersMapBuilder = new ImmutableMap.Builder<>();
-        jsonElement.getAsJsonObject().entrySet()
-                   .stream()
-                   .filter(entry -> !elements.containsKey(entry.getKey()))
-                   .forEach(entry -> qualifiersMapBuilder.put(entry.getKey(), entry.getValue().getAsString()));
-        return qualifiersMapBuilder.build();
+    private Map<String, String> getQualifiers(JsonElement jsonElement, Map<String, ConfigDefinitionElement<?>> elements) {
+        return jsonElement.getAsJsonObject().entrySet()
+                          .stream()
+                          .filter(entry -> !elements.containsKey(entry.getKey()))
+                          .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getAsString()));
     }
 
-    private ImmutableSortedSet<ConfigValue> getConfigValues(Map<String, ConfigDefinitionElement<?>> elements) {
-        Collection<ConfigValue> configValues = (List<ConfigValue>) elements.get(VALUES_ELEMENT).getValue();
-        ImmutableList<String> configCondition = (ImmutableList<String>) elements.get(CONFIG_CONDITION).getValue();
+    private Set<ConfigValue> getConfigValues(Map<String, ConfigDefinitionElement<?>> elements) {
+        List<ConfigValue> configValues = (List<ConfigValue>) elements.get(VALUES_ELEMENT).getValue();
+        List<String> configCondition = (List<String>) elements.get(CONFIG_CONDITION).getValue();
         validateConditionAndQualifier(configValues, configCondition);
-        return ImmutableSortedSet
-                .orderedBy(new ConfigConditionComparator(configCondition))
-                .addAll(configValues)
-                .build();
+        configValues.sort(new ConfigConditionComparator(configCondition));
+        return new LinkedHashSet<>(configValues);
     }
 
-    private void validateConditionAndQualifier(Collection<ConfigValue> configValues, ImmutableList<String> configCondition) {
+    private void validateConditionAndQualifier(Collection<ConfigValue> configValues, List<String> configCondition) {
         if (configValues == null || configValues.isEmpty()) {
             throw new ConfigDefinitionException(CONFIG_VALUES_EXCEPTION);
         }
@@ -93,7 +88,7 @@ public class ConfigDefinitionDeserializer implements JsonDeserializer<ConfigDefi
         checkConfigQualifiers(configCondition, usedQualifiers);
     }
 
-    private void checkConfigQualifiers(ImmutableList<String> configCondition, Set<String> usedQualifiers) {
+    private void checkConfigQualifiers(List<String> configCondition, Set<String> usedQualifiers) {
         if (!usedQualifiers.isEmpty()) {
             if (configCondition == null) {
                 throw new ConfigDefinitionException(CONFIG_CONDITION_EXCEPTION);
