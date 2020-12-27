@@ -13,6 +13,8 @@ import com.google.gson.JsonElement;
  */
 public final class ConfigConditionElement implements ConfigDefinitionElement<List<String>> {
 
+    private static final List<String> EMPTY_CONDITION = List.of();
+
     private List<String> configCondition;
 
     @Override
@@ -24,6 +26,6 @@ public final class ConfigConditionElement implements ConfigDefinitionElement<Lis
 
     @Override
     public List<String> getValue() {
-        return Optional.ofNullable(configCondition).orElse(List.of());
+        return Optional.ofNullable(configCondition).orElse(EMPTY_CONDITION);
     }
 }

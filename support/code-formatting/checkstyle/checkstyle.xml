@@ -46,7 +46,9 @@
     <module name="SimplifyBooleanExpression" />
     <module name="MissingJavadocType" />
     <module name="JavadocStyle" />
-    <module name="MissingJavadocMethod" />
+    <module name="MissingJavadocMethod">
+      <property name="tokens" value="METHOD_DEF,ANNOTATION_FIELD_DEF,COMPACT_CTOR_DEF" />
+    </module>
     <module name="InvalidJavadocPosition" />
     <module name="SingleLineJavadoc" />
     <module name="SimplifyBooleanReturn" />
@@ -73,7 +75,7 @@
     <module name="SuperFinalize" />
     <module name="UnnecessaryParentheses" />
     <module name="Indentation">
-      <property name="lineWrappingIndentation" value="8" />
+      <property name="lineWrappingIndentation" value="4" />
     </module>
     <module name="ExplicitInitialization" />
     <module name="MissingDeprecated" />

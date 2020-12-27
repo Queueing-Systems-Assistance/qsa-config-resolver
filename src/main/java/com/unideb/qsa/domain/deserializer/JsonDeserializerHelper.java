@@ -38,7 +38,7 @@ public final class JsonDeserializerHelper {
      * @return instance of {@link ConfigPack}.
      */
     public static ConfigPack deserializeToConfigPack(String configPackJson) {
-        return new ConfigPack.Builder(register().create().fromJson(configPackJson, ConfigPack.class).getConfigKeyToConfigDefinitionMap()).build();
+        return new ConfigPack(register().create().fromJson(configPackJson, ConfigPack.class).getConfigKeyToConfigDefinitionMap());
     }
 
     /**

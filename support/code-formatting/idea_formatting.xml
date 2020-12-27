@@ -24,6 +24,24 @@
     </option>
     <option name="JD_ADD_BLANK_AFTER_DESCRIPTION" value="false" />
   </JavaCodeStyleSettings>
+  <JetCodeStyleSettings>
+    <option name="PACKAGES_TO_USE_STAR_IMPORTS">
+      <value>
+        <package name="java.util" alias="false" withSubpackages="false" />
+        <package name="kotlinx.android.synthetic" alias="false" withSubpackages="true" />
+        <package name="io.ktor" alias="false" withSubpackages="true" />
+      </value>
+    </option>
+    <option name="PACKAGES_IMPORT_LAYOUT">
+      <value>
+        <package name="" alias="false" withSubpackages="true" />
+        <package name="java" alias="false" withSubpackages="true" />
+        <package name="javax" alias="false" withSubpackages="true" />
+        <package name="kotlin" alias="false" withSubpackages="true" />
+        <package name="" alias="true" withSubpackages="true" />
+      </value>
+    </option>
+  </JetCodeStyleSettings>
   <Properties>
     <option name="SPACES_AROUND_KEY_VALUE_DELIMITER" value="true" />
     <option name="KEEP_BLANK_LINES" value="true" />
@@ -57,8 +75,6 @@
     <option name="METHOD_CALL_CHAIN_WRAP" value="1" />
     <option name="BINARY_OPERATION_WRAP" value="1" />
     <option name="BINARY_OPERATION_SIGN_ON_NEXT_LINE" value="true" />
-    <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
-    <option name="KEEP_SIMPLE_LAMBDAS_IN_ONE_LINE" value="true" />
     <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true" />
     <option name="WRAP_COMMENTS" value="true" />
     <option name="IF_BRACE_FORCE" value="3" />

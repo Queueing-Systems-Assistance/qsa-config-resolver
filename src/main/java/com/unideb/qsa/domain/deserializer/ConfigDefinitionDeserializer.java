@@ -34,8 +34,7 @@ public class ConfigDefinitionDeserializer implements JsonDeserializer<ConfigDefi
 
     private static final String CONFIG_CONDITION_EXCEPTION = "ConfigDefinitionDeserializer 'configCondition' must not be null";
     private static final String CONFIG_VALUES_EXCEPTION = "ConfigDefinitionDeserializer 'values' must not be null or empty";
-    private static final String CONFIG_CONDITION_QUALIFIER_EXCEPTION = "ConfigDefinitionDeserializer 'configCondition' must contain"
-                                                                       + " all qualifiers in use in the configDefinition";
+    private static final String CONFIG_CONDITION_QUALIFIER_EXCEPTION = "ConfigDefinitionDeserializer 'configCondition' must contain all qualifiers in use in the configDefinition";
 
     @Override
     public ConfigDefinition deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) {

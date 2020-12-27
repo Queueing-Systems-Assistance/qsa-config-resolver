@@ -23,7 +23,7 @@ import com.unideb.qsa.domain.exception.ConfigValueException;
  */
 public class ConfigValueDeserializer implements JsonDeserializer<ConfigValue> {
 
-    private static final String VALUE_EXCEPTION = "'value' is missing value attribute: %s";
+    private static final String ERROR_MESSAGE_VALUE_NOT_FOUND = "'value' is missing value attribute: %s";
     private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 
     @Override
@@ -49,6 +49,6 @@ public class ConfigValueDeserializer implements JsonDeserializer<ConfigValue> {
                           .findAny()
                           .map(Entry::getValue)
                           .map(valueJsonElement -> valueJsonElement.isJsonPrimitive() ? valueJsonElement.getAsString() : GSON.toJson(valueJsonElement))
-                          .orElseThrow(() -> new ConfigValueException(String.format(VALUE_EXCEPTION, jsonElement.toString())));
+                          .orElseThrow(() -> new ConfigValueException(String.format(ERROR_MESSAGE_VALUE_NOT_FOUND, jsonElement.toString())));
     }
 }

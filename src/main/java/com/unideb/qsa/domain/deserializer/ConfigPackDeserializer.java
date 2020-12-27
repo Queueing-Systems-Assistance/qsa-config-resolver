@@ -26,11 +26,12 @@ public class ConfigPackDeserializer implements JsonDeserializer<ConfigPack> {
     @Override
     public ConfigPack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
-        return new ConfigPack.Builder(populate(jsonObject, context)).build();
+        JsonArray configDefinitionsJsonArray = jsonObject.get(CONFIG).getAsJsonArray();
+        Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap = create(context, configDefinitionsJsonArray);
+        return new ConfigPack(configKeyToConfigDefinitionMap);
     }
 
-    private Map<ConfigKey, ConfigDefinition> populate(JsonObject jsonObject, JsonDeserializationContext context) {
-        JsonArray configDefinitionsJsonArray = jsonObject.get(CONFIG).getAsJsonArray();
+    private Map<ConfigKey, ConfigDefinition> create(JsonDeserializationContext context, JsonArray configDefinitionsJsonArray) {
         return StreamSupport.stream(configDefinitionsJsonArray.spliterator(), true)
                             .map(configDefinitionJsonElement -> (ConfigDefinition) context.deserialize(configDefinitionJsonElement, ConfigDefinition.class))
                             .collect(Collectors.toMap(ConfigKey::new, propertyDefinition -> propertyDefinition));

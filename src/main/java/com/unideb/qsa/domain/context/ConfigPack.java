@@ -17,8 +17,11 @@ public final class ConfigPack {
     private final Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap;
     private final Map<String, Collection<ConfigDefinition>> configNameToConfigDefinitionsMap;
 
-    private ConfigPack(Builder builder) {
-        this.configKeyToConfigDefinitionMap = builder.configKeyToConfigDefinitionMap;
+    public ConfigPack(Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap) {
+        if (configKeyToConfigDefinitionMap == null) {
+            throw new ConfigPackException("Config keys cannot be null!");
+        }
+        this.configKeyToConfigDefinitionMap = configKeyToConfigDefinitionMap;
         this.configNameToConfigDefinitionsMap = createConfigNameToConfigDefinitionsMap(configKeyToConfigDefinitionMap);
     }
 
@@ -70,29 +73,5 @@ public final class ConfigPack {
             }
         }
         return configNameToConfigDefinitionsMap;
-    }
-
-    /**
-     * Builder for {@link ConfigPack}.
-     */
-    public static class Builder {
-
-        private final Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap;
-
-        public Builder(Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap) {
-            if (configKeyToConfigDefinitionMap == null) {
-                throw new ConfigPackException("Config keys cannot be null!");
-            }
-
-            this.configKeyToConfigDefinitionMap = configKeyToConfigDefinitionMap;
-        }
-
-        /**
-         * Builds a {@link ConfigPack}.
-         * @return {@link ConfigPack}
-         */
-        public ConfigPack build() {
-            return new ConfigPack(this);
-        }
     }
 }
