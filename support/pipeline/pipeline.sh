@@ -22,7 +22,7 @@ echo "Build QSA Config Domain"
 if [[ "${BRANCH_NAME}" == "master" ]]; then
   # Publish
   echo "Publish package to GitHub Packages"
-  ./gradlew publish || exit
+  ./gradlew publish -Prelease.version="${RELEASE_VERSION}" || exit
   # Create git tag & push to GitHub
   git tag -a -f "${RELEASE_VERSION}" -m "${RELEASE_VERSION}" || exit
   git push -f "${GITHUB_ENDPOINT}" refs/tags/"${RELEASE_VERSION}" || exit
