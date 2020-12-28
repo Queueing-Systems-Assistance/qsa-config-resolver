@@ -14,14 +14,12 @@ public interface ConfigPackSource {
 
     /**
      * Resolves {@link ConfigPack}s.
-     *
      * @return resolved {@link ConfigPack} in a list
      */
     List<ConfigPack> getConfigPacks();
 
     /**
      * Check if the given location is an URL or not.
-     *
      * @param configLocation location
      * @return true, if the location is an URL, false otherwise
      */

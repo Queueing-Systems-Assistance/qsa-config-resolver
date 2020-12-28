@@ -1,40 +1,46 @@
 package com.unideb.qsa.config.resolver.datasource.configpack;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
-import com.unideb.qsa.config.resolver.config.ResolverProperties;
 import com.unideb.qsa.domain.context.ConfigPack;
 import com.unideb.qsa.domain.deserializer.JsonDeserializerHelper;
+import com.unideb.qsa.domain.exception.ConfigPackException;
 
 /**
  * Resolves {@link ConfigPack} from URL.
  */
-@Component
 public class UrlConfigPackSource implements ConfigPackSource {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final HttpClient httpClient;
+    private final List<String> configUris;
 
-    @Autowired
-    private ResolverProperties resolverProperties;
+    public UrlConfigPackSource(List<String> configUris, HttpClient httpClient) {
+        this.configUris = configUris;
+        this.httpClient = httpClient;
+    }
 
     @Override
     public List<ConfigPack> getConfigPacks() {
-        return resolverProperties
-                .getUris()
-                .stream()
-                .filter(this::isConfigLocationURL)
-                .map(this::getConfigContentFromPath)
-                .map(JsonDeserializerHelper::deserializeToConfigPack)
-                .collect(Collectors.toList());
+        return configUris.stream()
+                         .filter(this::isConfigLocationURL)
+                         .map(URI::create)
+                         .map(this::getResponse)
+                         .map(HttpResponse::body)
+                         .map(JsonDeserializerHelper::deserializeToConfigPack)
+                         .collect(Collectors.toList());
     }
 
-    private String getConfigContentFromPath(String configPackLocation) {
-        return restTemplate.getForObject(configPackLocation, String.class);
+    private HttpResponse<String> getResponse(URI configPackUri) {
+        try {
+            return httpClient.send(HttpRequest.newBuilder(configPackUri).GET().build(), HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new ConfigPackException(String.format("Cannot fetch config pack, uri [%s]", configPackUri.toString()));
+        }
     }
 }
