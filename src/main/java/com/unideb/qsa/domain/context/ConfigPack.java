@@ -1,35 +1,43 @@
 package com.unideb.qsa.domain.context;
 
-
-import static com.google.common.base.Preconditions.checkArgument;
-
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSortedMap;
+import com.unideb.qsa.domain.exception.ConfigPackException;
 
 /**
  * Immutable object for a config pack.
  */
 public final class ConfigPack {
 
-    private final ImmutableMap<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap;
-    private final ImmutableSortedMap<String, ImmutableCollection<ConfigDefinition>> configNameToConfigDefinitionsMap;
+    private final Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap;
+    private final Map<String, Collection<ConfigDefinition>> configNameToConfigDefinitionsMap;
 
-    private ConfigPack(Builder builder) {
-        this.configKeyToConfigDefinitionMap = builder.configKeyToConfigDefinitionMap;
+    public ConfigPack(Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap) {
+        if (configKeyToConfigDefinitionMap == null) {
+            throw new ConfigPackException("Config keys cannot be null!");
+        }
+        this.configKeyToConfigDefinitionMap = configKeyToConfigDefinitionMap;
         this.configNameToConfigDefinitionsMap = createConfigNameToConfigDefinitionsMap(configKeyToConfigDefinitionMap);
     }
 
-    public ImmutableMap<ConfigKey, ConfigDefinition> getConfigKeyToConfigDefinitionMap() {
+    /**
+     * Get the configs mapped as config key - config definition.
+     * @return a map, where the key is the config key and the value is the corresponding definition.
+     */
+    public Map<ConfigKey, ConfigDefinition> getConfigKeyToConfigDefinitionMap() {
         return this.configKeyToConfigDefinitionMap;
     }
 
-    public ImmutableSortedMap<String, ImmutableCollection<ConfigDefinition>> getConfigNameToConfigDefinitionsMap() {
+    /**
+     * Get the configs mapped as config name - config definition.
+     * @return a map, where the key is the config file name and the value is the corresponding definition list.
+     */
+    public Map<String, Collection<ConfigDefinition>> getConfigNameToConfigDefinitionsMap() {
         return configNameToConfigDefinitionsMap;
     }
 
@@ -59,46 +67,18 @@ public final class ConfigPack {
         return Objects.hash(configKeyToConfigDefinitionMap, configNameToConfigDefinitionsMap);
     }
 
-    private ImmutableSortedMap<String, ImmutableCollection<ConfigDefinition>> createConfigNameToConfigDefinitionsMap(
-            ImmutableMap<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap) {
-        Map<String, ImmutableCollection<ConfigDefinition>> configNameToConfigDefinitionsMap = new HashMap<>();
+    private Map<String, Collection<ConfigDefinition>> createConfigNameToConfigDefinitionsMap(Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap) {
+        Map<String, Collection<ConfigDefinition>> configNameToConfigDefinitionsMap = new HashMap<>();
         for (ConfigDefinition configDefinition : configKeyToConfigDefinitionMap.values()) {
             String configNameName = configDefinition.getName();
             if (configNameToConfigDefinitionsMap.containsKey(configNameName)) {
-                configNameToConfigDefinitionsMap.put(configNameName, new ImmutableList.Builder<ConfigDefinition>()
-                        .addAll(configNameToConfigDefinitionsMap.get(configNameName))
-                        .add(configDefinition)
-                        .build());
+                List<ConfigDefinition> definitions = new ArrayList<>(configNameToConfigDefinitionsMap.get(configNameName));
+                definitions.add(configDefinition);
+                configNameToConfigDefinitionsMap.put(configNameName, definitions);
             } else {
-                configNameToConfigDefinitionsMap.put(configNameName, ImmutableList.of(configDefinition));
+                configNameToConfigDefinitionsMap.put(configNameName, List.of(configDefinition));
             }
         }
-        return ImmutableSortedMap
-                .<String, ImmutableCollection<ConfigDefinition>>naturalOrder()
-                .putAll(configNameToConfigDefinitionsMap)
-                .build();
-    }
-
-    /**
-     * Builder for {@link ConfigPack}.
-     */
-    public static class Builder {
-
-        private final ImmutableMap<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap;
-
-        public Builder(ImmutableMap<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap) {
-            checkArgument(configKeyToConfigDefinitionMap != null);
-
-            this.configKeyToConfigDefinitionMap = configKeyToConfigDefinitionMap;
-        }
-
-        /**
-         * Builds a {@link ConfigPack}.
-         *
-         * @return {@link ConfigPack}
-         */
-        public ConfigPack build() {
-            return new ConfigPack(this);
-        }
+        return configNameToConfigDefinitionsMap;
     }
 }

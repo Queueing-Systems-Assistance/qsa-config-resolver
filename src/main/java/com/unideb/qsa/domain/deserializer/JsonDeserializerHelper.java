@@ -25,7 +25,6 @@ public final class JsonDeserializerHelper {
 
     /**
      * Deserialize a given string to {@link ConfigDefinition}.
-     *
      * @param fileContent The fileContent to deserialize.
      * @return instance of {@link ConfigDefinition}.
      */
@@ -35,17 +34,15 @@ public final class JsonDeserializerHelper {
 
     /**
      * Deserialize a given string to a {@link ConfigPack}.
-     *
      * @param configPackJson The configPackJson to deserialize.
      * @return instance of {@link ConfigPack}.
      */
     public static ConfigPack deserializeToConfigPack(String configPackJson) {
-        return new ConfigPack.Builder(register().create().fromJson(configPackJson, ConfigPack.class).getConfigKeyToConfigDefinitionMap()).build();
+        return new ConfigPack(register().create().fromJson(configPackJson, ConfigPack.class).getConfigKeyToConfigDefinitionMap());
     }
 
     /**
      * Deserialize a given json arrays into a {@link ConfigPack}.
-     *
      * @param configJsonArray as json array
      * @return instance of {@link ConfigPack}
      */

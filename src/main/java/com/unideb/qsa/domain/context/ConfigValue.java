@@ -1,9 +1,8 @@
 package com.unideb.qsa.domain.context;
 
+import java.util.Map;
 import java.util.Objects;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 
 import com.unideb.qsa.domain.exception.ConfigValueException;
 
@@ -16,9 +15,9 @@ public final class ConfigValue {
     private static final String QUALIFIERS_EXCEPTION = "ConfigValue 'qualifiers' must not be null";
 
     private final String value;
-    private final ImmutableMap<String, ImmutableSet<String>> qualifiers;
+    private final Map<String, Set<String>> qualifiers;
 
-    public ConfigValue(String value, ImmutableMap<String, ImmutableSet<String>> qualifiers) {
+    public ConfigValue(String value, Map<String, Set<String>> qualifiers) {
         if (value == null) {
             throw new ConfigValueException(VALUE_EXCEPTION);
         }
@@ -56,11 +55,39 @@ public final class ConfigValue {
         return Objects.hash(value, qualifiers);
     }
 
+    /**
+     * Get the config value. For example the following config will return with 'value of the config' string:
+     * <pre>
+     * {@code
+     * {
+     *   "value": "value of the config",
+     *   "locale": [
+     *     "hu"
+     *   ]
+     * }
+     * }
+     * </pre>
+     * @return value of the config.
+     */
     public String getValue() {
         return value;
     }
 
-    public ImmutableMap<String, ImmutableSet<String>> getQualifiers() {
+    /**
+     * Get the config value qualifiers. For example in the following config the result will be a map, where 'locale' is the key and 'hu' is the value:
+     * <pre>
+     * {@code
+     * {
+     *   "value": "value of the config",
+     *   "locale": [
+     *     "hu"
+     *   ]
+     * }
+     * }
+     * </pre>
+     * @return a map, where the keys are the configCondition values and the values are the corresponding values.
+     */
+    public Map<String, Set<String>> getQualifiers() {
         return qualifiers;
     }
 }

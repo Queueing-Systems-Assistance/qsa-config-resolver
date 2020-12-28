@@ -1,11 +1,10 @@
 package com.unideb.qsa.domain.context;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
+import com.unideb.qsa.domain.exception.ConfigPackException;
+
 
 /**
  * Immutable object for a config qualifier.
@@ -20,7 +19,6 @@ public final class Qualifier {
 
     /**
      * Checks if the {@link Qualifier} contains the key.
-     *
      * @param key key
      * @return true if it contains the key
      */
@@ -30,7 +28,6 @@ public final class Qualifier {
 
     /**
      * Returns the associated value of the key.
-     *
      * @param key key
      * @return value
      */
@@ -39,12 +36,11 @@ public final class Qualifier {
     }
 
     /**
-     * Converts the qualifiers into an {@link ImmutableMap}.
-     *
+     * Converts the qualifiers into an {@link Map}.
      * @return map based on the given keys and values
      */
-    public ImmutableMap<String, String> asMap() {
-        return ImmutableMap.copyOf(qualifierMap);
+    public Map<String, String> asMap() {
+        return new HashMap<>(qualifierMap);
     }
 
     @Override
@@ -59,24 +55,24 @@ public final class Qualifier {
      */
     public static class Builder {
 
-        private Map<String, String> qualifierMap = new HashMap<>();
+        private final Map<String, String> qualifierMap = new HashMap<>();
 
         /**
          * Adds the given key and value to the qualifiers.
-         *
          * @param key   key
          * @param value value
          * @return {@link Qualifier.Builder}
          */
         public Builder put(String key, String value) {
-            checkArgument(key != null && value != null, "All keys and values in the context must be non null: key=%s, value=%s", key, value);
+            if (key == null || value == null) {
+                throw new ConfigPackException(String.format("All keys and values in the context must be non null: key=%s, value=%s", key, value));
+            }
             qualifierMap.put(key, value);
             return this;
         }
 
         /**
          * Adds all the keys and values from the map to the qualifiers.
-         *
          * @param qualifierMap map
          * @return {@link Qualifier.Builder}
          */
@@ -87,7 +83,6 @@ public final class Qualifier {
 
         /**
          * Builds {@link Qualifier}.
-         *
          * @return {@link Qualifier}
          */
         public Qualifier build() {

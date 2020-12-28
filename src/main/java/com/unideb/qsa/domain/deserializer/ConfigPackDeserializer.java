@@ -1,9 +1,10 @@
 package com.unideb.qsa.domain.deserializer;
 
-
 import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -25,16 +26,14 @@ public class ConfigPackDeserializer implements JsonDeserializer<ConfigPack> {
     @Override
     public ConfigPack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
-        return new ConfigPack.Builder(populate(jsonObject, context)).build();
+        JsonArray configDefinitionsJsonArray = jsonObject.get(CONFIG).getAsJsonArray();
+        Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap = create(context, configDefinitionsJsonArray);
+        return new ConfigPack(configKeyToConfigDefinitionMap);
     }
 
-    private ImmutableMap<ConfigKey, ConfigDefinition> populate(JsonObject jsonObject, JsonDeserializationContext context) {
-        JsonArray configDefinitionsJsonArray = jsonObject.get(CONFIG).getAsJsonArray();
-        ImmutableMap.Builder<ConfigKey, ConfigDefinition> builder = new ImmutableMap.Builder<>();
-        configDefinitionsJsonArray.forEach(configDefinitionJsonElement -> {
-            ConfigDefinition propertyDefinition = context.deserialize(configDefinitionJsonElement, ConfigDefinition.class);
-            builder.put(new ConfigKey(propertyDefinition), propertyDefinition);
-        });
-        return builder.build();
+    private Map<ConfigKey, ConfigDefinition> create(JsonDeserializationContext context, JsonArray configDefinitionsJsonArray) {
+        return StreamSupport.stream(configDefinitionsJsonArray.spliterator(), true)
+                            .map(configDefinitionJsonElement -> (ConfigDefinition) context.deserialize(configDefinitionJsonElement, ConfigDefinition.class))
+                            .collect(Collectors.toMap(ConfigKey::new, propertyDefinition -> propertyDefinition));
     }
 }

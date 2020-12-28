@@ -1,9 +1,8 @@
 package com.unideb.qsa.domain.context;
 
+import java.util.Map;
 import java.util.Objects;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSortedSet;
+import java.util.Set;
 
 import com.unideb.qsa.domain.exception.ConfigDefinitionException;
 
@@ -12,13 +11,13 @@ import com.unideb.qsa.domain.exception.ConfigDefinitionException;
  */
 public final class ConfigDefinition {
 
-    private static final String NAME_EXCEPTION = "ConfigDefinition 'name' must not be null";
+    private static final String NAME_EXCEPTION = "ConfigDefinition [name] must not be null";
 
     private final String name;
-    private final ImmutableSortedSet<ConfigValue> configValues;
-    private final ImmutableMap<String, String> qualifiers;
+    private final Set<ConfigValue> configValues;
+    private final Map<String, String> qualifiers;
 
-    public ConfigDefinition(String name, ImmutableSortedSet<ConfigValue> configValues, ImmutableMap<String, String> qualifiers) {
+    public ConfigDefinition(String name, Set<ConfigValue> configValues, Map<String, String> qualifiers) {
         if (name == null) {
             throw new ConfigDefinitionException(NAME_EXCEPTION);
         }
@@ -55,15 +54,74 @@ public final class ConfigDefinition {
                + "}";
     }
 
+    /**
+     * Get the config name. For example, this is the name of the config file:
+     * <pre>
+     * {@code
+     * {
+     *   "config": "CONFIG_NAME",
+     *   "values": [
+     *     {
+     *       "value": ""
+     *     }
+     *   ]
+     * }
+     * }
+     * </pre>
+     * @return the config file name
+     */
     public String getName() {
         return name;
     }
 
-    public ImmutableSortedSet<ConfigValue> getConfigValues() {
+    /**
+     * Get the config values (both default and qualifier ones). These qualifiers only applies to the config values, not for the config file itself.
+     * For example:
+     * <pre>
+     * {@code
+     * {
+     *   "config": "",
+     *   "configCondition": [
+     *     "locale"
+     *   ],
+     *   "values": [
+     *     {
+     *       "value": "Qualified config value",
+     *       "locale": [
+     *         "hu"
+     *       ]
+     *     },
+     *     {
+     *       "value": "Default config value"
+     *     }
+     *   ]
+     * }
+     * }
+     * </pre>
+     * @return config file values
+     */
+    public Set<ConfigValue> getConfigValues() {
         return configValues;
     }
 
-    public ImmutableMap<String, String> getQualifiers() {
+    /**
+     * Get the config file qualifiers. Not the value qualifiers (config conditions) but the config file conditions itself (eg.: name). For example:
+     * <pre>
+     * {@code
+     * {
+     *   "config": "NAME",
+     *   "name": "configQualifier",
+     *   "values": [
+     *     {
+     *       "value": ""
+     *     }
+     *   ]
+     * }
+     * }
+     * </pre>
+     * @return a map, where the key is the config qualifier name, the value is the corresponding value. In the case above: key - name, value - configQualifier
+     */
+    public Map<String, String> getQualifiers() {
         return qualifiers;
     }
 
