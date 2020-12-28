@@ -25,10 +25,18 @@ public final class ConfigPack {
         this.configNameToConfigDefinitionsMap = createConfigNameToConfigDefinitionsMap(configKeyToConfigDefinitionMap);
     }
 
+    /**
+     * Get the configs mapped as config key - config definition.
+     * @return a map, where the key is the config key and the value is the corresponding definition.
+     */
     public Map<ConfigKey, ConfigDefinition> getConfigKeyToConfigDefinitionMap() {
         return this.configKeyToConfigDefinitionMap;
     }
 
+    /**
+     * Get the configs mapped as config name - config definition.
+     * @return a map, where the key is the config file name and the value is the corresponding definition list.
+     */
     public Map<String, Collection<ConfigDefinition>> getConfigNameToConfigDefinitionsMap() {
         return configNameToConfigDefinitionsMap;
     }
@@ -59,8 +67,7 @@ public final class ConfigPack {
         return Objects.hash(configKeyToConfigDefinitionMap, configNameToConfigDefinitionsMap);
     }
 
-    private Map<String, Collection<ConfigDefinition>> createConfigNameToConfigDefinitionsMap(
-            Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap) {
+    private Map<String, Collection<ConfigDefinition>> createConfigNameToConfigDefinitionsMap(Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap) {
         Map<String, Collection<ConfigDefinition>> configNameToConfigDefinitionsMap = new HashMap<>();
         for (ConfigDefinition configDefinition : configKeyToConfigDefinitionMap.values()) {
             String configNameName = configDefinition.getName();

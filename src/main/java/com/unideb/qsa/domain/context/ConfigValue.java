@@ -55,10 +55,38 @@ public final class ConfigValue {
         return Objects.hash(value, qualifiers);
     }
 
+    /**
+     * Get the config value. For example the following config will return with 'value of the config' string:
+     * <pre>
+     * {@code
+     * {
+     *   "value": "value of the config",
+     *   "locale": [
+     *     "hu"
+     *   ]
+     * }
+     * }
+     * </pre>
+     * @return value of the config.
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Get the config value qualifiers. For example in the following config the result will be a map, where 'locale' is the key and 'hu' is the value:
+     * <pre>
+     * {@code
+     * {
+     *   "value": "value of the config",
+     *   "locale": [
+     *     "hu"
+     *   ]
+     * }
+     * }
+     * </pre>
+     * @return a map, where the keys are the configCondition values and the values are the corresponding values.
+     */
     public Map<String, Set<String>> getQualifiers() {
         return qualifiers;
     }

@@ -33,8 +33,7 @@ public final class ConfigConditionComparator implements Comparator<ConfigValue> 
         return compareSameQualifierKeys(configValue1, configValue2);
     }
 
-    private Integer isQualifiersDifferent(Map<String, Set<String>> qualifiersCv1, Map<String, Set<String>> qualifiersCv2,
-            String qualifierField) {
+    private Integer isQualifiersDifferent(Map<String, Set<String>> qualifiersCv1, Map<String, Set<String>> qualifiersCv2, String qualifierField) {
         Integer result = null;
         if (qualifiersCv1.containsKey(qualifierField) && !qualifiersCv2.containsKey(qualifierField)) {
             result = -1;

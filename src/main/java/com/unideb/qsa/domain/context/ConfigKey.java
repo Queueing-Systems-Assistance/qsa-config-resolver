@@ -50,10 +50,18 @@ public final class ConfigKey {
                + "}";
     }
 
+    /**
+     * Same as the {@link ConfigDefinition#getName()}.
+     * @return the config file name
+     */
     public String getConfigName() {
         return configName;
     }
 
+    /**
+     * Same as the {@link ConfigDefinition#getQualifiers()}.
+     * @return a map, where the key is the config qualifier name, the value is the corresponding value.
+     */
     public Map<String, String> getQualifiers() {
         return qualifiers;
     }

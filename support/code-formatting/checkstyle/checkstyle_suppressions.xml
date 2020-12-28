@@ -5,12 +5,8 @@
 
 <suppressions>
     <!-- Test files -->
-    <suppress checks="MagicNumber" files=".*[/\\]*Test.java" />
     <suppress checks="JavadocMethod" files=".*[/\\]*Test.java" />
-    <suppress checks="JavadocMethod" files="com.unideb.qsa.domain.context" />
-    <suppress checks="JavadocMethod" files="com.unideb.qsa.domain.exception" />
     <suppress checks="JavadocType" files=".*[/\\]*Test.java" />
     <suppress checks="ReturnCount" files="ConfigConditionComparator.java" />
     <suppress checks="CyclomaticComplexity" files="ConfigConditionComparator.java" />
-    <suppress checks="CyclomaticComplexity" files="ConfigDefinition.java" />
 </suppressions>
