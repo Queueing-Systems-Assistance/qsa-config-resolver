@@ -44,7 +44,7 @@ checkstyle {
 
 dependencies {
   /* QSA */
-  implementation 'com.unideb.qsa:qsa-config-domain:1.0.9'
+  implementation 'com.unideb.qsa:qsa-config-domain:1.0.11'
   /* OTHER */
   implementation 'org.slf4j:jcl-over-slf4j:1.7.30'
   implementation 'org.slf4j:slf4j-api:1.7.30'
