@@ -16,7 +16,7 @@ echo "GITHUB_ENDPOINT=${GITHUB_ENDPOINT}"
 echo "RELEASE_VERSION=${RELEASE_VERSION}"
 
 # Build
-echo "Build QSA Config Domain"
+echo "Build QSA Config Resolver"
 ./gradlew clean build -Prelease.version="${RELEASE_VERSION}" || exit
 
 if [[ "${BRANCH_NAME}" == "master" ]]; then
