@@ -7,7 +7,7 @@ git config --global user.name "Travis CI" || exit
 
 # Update branch name
 BRANCH_NAME=${TRAVIS_BRANCH}
-GITHUB_ENDPOINT="https://${GITHUB_OWN_TOKEN}@github.com/${TRAVIS_REPO_SLUG}"
+GITHUB_ENDPOINT="https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}"
 RELEASE_VERSION=${PROJECT_MAJOR_VERSION}.${PROJECT_MINOR_VERSION}.${TRAVIS_BUILD_NUMBER}
 
 # Print variables
