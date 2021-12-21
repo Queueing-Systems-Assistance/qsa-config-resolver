@@ -13,7 +13,7 @@ ext {
   print('Release version [' + projectVersion + ']')
 }
 
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'checkstyle'
 apply plugin: 'java'
 apply plugin: 'java-library'
@@ -21,24 +21,23 @@ apply plugin: 'java-library'
 repositories {
   mavenLocal()
   mavenCentral()
-  jcenter()
   maven {
     url 'https://jitpack.io'
   }
 }
 
 checkstyle {
-  toolVersion = '8.38'
+  toolVersion = '9.2'
   configFile = file("${rootDir}/support/code-formatting/checkstyle/checkstyle.xml")
-  configDir = file("${rootDir}/support/code-formatting/checkstyle/")
+  configDirectory = file("${rootDir}/support/code-formatting/checkstyle/")
   showViolations = true
   ignoreFailures = false
 }
 
 dependencies {
-  implementation 'com.google.code.gson:gson:2.8.6'
-  testImplementation 'org.mockito:mockito-core:3.6.28'
-  testImplementation 'org.testng:testng:7.3.0'
+  implementation 'com.google.code.gson:gson:2.8.9'
+  testImplementation 'org.mockito:mockito-core:4.1.0'
+  testImplementation 'org.testng:testng:7.4.0'
 }
 
 publishing {
@@ -59,7 +58,7 @@ publishing {
   }
 }
 
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 group = projectGroup
 version = projectVersion
 
