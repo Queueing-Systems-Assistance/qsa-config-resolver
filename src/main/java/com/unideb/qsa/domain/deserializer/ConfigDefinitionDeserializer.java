@@ -38,17 +38,17 @@ public class ConfigDefinitionDeserializer implements JsonDeserializer<ConfigDefi
 
     @Override
     public ConfigDefinition deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) {
-        Map<String, ConfigDefinitionElement<?>> elements = createConfigDefinition();
+        var elements = createConfigDefinition();
         populateElements(jsonElement, context, elements);
 
-        String configName = (String) elements.get(CONFIG_ELEMENT).getValue();
-        Map<String, String> qualifiers = getQualifiers(jsonElement, elements);
-        Set<ConfigValue> configValues = getConfigValues(elements);
+        var configName = (String) elements.get(CONFIG_ELEMENT).getValue();
+        var qualifiers = getQualifiers(jsonElement, elements);
+        var configValues = getConfigValues(elements);
         return new ConfigDefinition(configName, configValues, qualifiers);
     }
 
     private Map<String, ConfigDefinitionElement<?>> createConfigDefinition() {
-        Map<String, ConfigDefinitionElement<?>> elements = new HashMap<>();
+        var elements = new HashMap<String, ConfigDefinitionElement<?>>();
         elements.put(CONFIG_ELEMENT, new ConfigNameElement());
         elements.put(CONFIG_CONDITION, new ConfigConditionElement());
         elements.put(VALUES_ELEMENT, new ConfigValuesElement());
@@ -71,8 +71,8 @@ public class ConfigDefinitionDeserializer implements JsonDeserializer<ConfigDefi
     }
 
     private Set<ConfigValue> getConfigValues(Map<String, ConfigDefinitionElement<?>> elements) {
-        List<ConfigValue> configValues = (List<ConfigValue>) elements.get(VALUES_ELEMENT).getValue();
-        List<String> configCondition = (List<String>) elements.get(CONFIG_CONDITION).getValue();
+        var configValues = (List<ConfigValue>) elements.get(VALUES_ELEMENT).getValue();
+        var configCondition = (List<String>) elements.get(CONFIG_CONDITION).getValue();
         validateConditionAndQualifier(configValues, configCondition);
         configValues.sort(new ConfigConditionComparator(configCondition));
         return new LinkedHashSet<>(configValues);
@@ -82,7 +82,7 @@ public class ConfigDefinitionDeserializer implements JsonDeserializer<ConfigDefi
         if (configValues == null || configValues.isEmpty()) {
             throw new ConfigDefinitionException(CONFIG_VALUES_EXCEPTION);
         }
-        Set<String> usedQualifiers = new HashSet<>();
+        var usedQualifiers = new HashSet<String>();
         configValues.forEach(configValue -> usedQualifiers.addAll(configValue.getQualifiers().keySet()));
         checkConfigQualifiers(configCondition, usedQualifiers);
     }

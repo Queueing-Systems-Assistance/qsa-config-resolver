@@ -32,9 +32,8 @@ public final class ConfigKey {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConfigKey configKey = (ConfigKey) o;
-        return Objects.equals(configName, configKey.configName)
-               && Objects.equals(qualifiers, configKey.qualifiers);
+        var configKey = (ConfigKey) o;
+        return Objects.equals(configName, configKey.configName) && Objects.equals(qualifiers, configKey.qualifiers);
     }
 
     @Override

@@ -37,9 +37,8 @@ public final class ConfigValue {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConfigValue that = (ConfigValue) o;
-        return Objects.equals(value, that.value)
-               && Objects.equals(qualifiers, that.qualifiers);
+        var that = (ConfigValue) o;
+        return Objects.equals(value, that.value) && Objects.equals(qualifiers, that.qualifiers);
     }
 
     @Override

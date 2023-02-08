@@ -1,7 +1,6 @@
 package com.unideb.qsa.domain.context;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,12 +19,10 @@ public final class ConfigConditionComparator implements Comparator<ConfigValue> 
 
     @Override
     public int compare(ConfigValue configValue1, ConfigValue configValue2) {
-
-        Map<String, Set<String>> qualifiersCv1 = configValue1.getQualifiers();
-        Map<String, Set<String>> qualifiersCv2 = configValue2.getQualifiers();
-
-        for (String qualifierField : configCondition) {
-            Integer result = isQualifiersDifferent(qualifiersCv1, qualifiersCv2, qualifierField);
+        var qualifiersCv1 = configValue1.getQualifiers();
+        var qualifiersCv2 = configValue2.getQualifiers();
+        for (var qualifierField : configCondition) {
+            var result = isQualifiersDifferent(qualifiersCv1, qualifiersCv2, qualifierField);
             if (result != null) {
                 return result;
             }
@@ -53,17 +50,15 @@ public final class ConfigConditionComparator implements Comparator<ConfigValue> 
     }
 
     private int compareBasedOnQualifierValues(ConfigValue configValue1, ConfigValue configValue2) {
-        for (String qualifierField : configCondition) {
+        for (var qualifierField : configCondition) {
             if (configValue1.getQualifiers().containsKey(qualifierField)) {
-                Set<String> qualifierValues1 = configValue1.getQualifiers().get(qualifierField);
-                Set<String> qualifierValues2 = configValue2.getQualifiers().get(qualifierField);
-
-                int qualifierValuesNumberCompare = compareBasedOnNumberOfQualifierValues(qualifierValues1, qualifierValues2);
+                var qualifierValues1 = configValue1.getQualifiers().get(qualifierField);
+                var qualifierValues2 = configValue2.getQualifiers().get(qualifierField);
+                var qualifierValuesNumberCompare = compareBasedOnNumberOfQualifierValues(qualifierValues1, qualifierValues2);
                 if (qualifierValuesNumberCompare != 0) {
                     return qualifierValuesNumberCompare;
                 }
-
-                int qualifierValuesNaturalOrderingCompare = compareBasedOnQualifierValuesNaturalOrdering(qualifierValues1, qualifierValues2);
+                var qualifierValuesNaturalOrderingCompare = compareBasedOnQualifierValuesNaturalOrdering(qualifierValues1, qualifierValues2);
                 if (qualifierValuesNaturalOrderingCompare != 0) {
                     return qualifierValuesNaturalOrderingCompare;
                 }
@@ -78,8 +73,8 @@ public final class ConfigConditionComparator implements Comparator<ConfigValue> 
     }
 
     private int compareBasedOnQualifierValuesNaturalOrdering(Set<String> qualifierValues1, Set<String> qualifierValues2) {
-        Iterator<String> iterator1 = qualifierValues1.iterator();
-        Iterator<String> iterator2 = qualifierValues2.iterator();
+        var iterator1 = qualifierValues1.iterator();
+        var iterator2 = qualifierValues2.iterator();
         while (iterator1.hasNext()) {
             int qualifierValueNaturalOrdering = iterator1.next().compareTo(iterator2.next());
             if (qualifierValueNaturalOrdering != 0) {

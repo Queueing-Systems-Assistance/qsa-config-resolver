@@ -28,8 +28,8 @@ public class ConfigValueDeserializer implements JsonDeserializer<ConfigValue> {
 
     @Override
     public ConfigValue deserialize(JsonElement jsonElement, Type typeOfSrc, JsonDeserializationContext jsonDeserializationContext) {
-        String value = getValue(jsonElement);
-        Map<String, Set<String>> qualifiers = getQualifiers(jsonElement, jsonDeserializationContext);
+        var value = getValue(jsonElement);
+        var qualifiers = getQualifiers(jsonElement, jsonDeserializationContext);
         return new ConfigValue(value, qualifiers);
     }
 

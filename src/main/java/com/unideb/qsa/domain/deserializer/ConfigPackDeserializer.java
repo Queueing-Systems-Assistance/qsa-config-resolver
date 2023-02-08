@@ -9,7 +9,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import com.unideb.qsa.domain.context.ConfigDefinition;
@@ -25,9 +24,9 @@ public class ConfigPackDeserializer implements JsonDeserializer<ConfigPack> {
 
     @Override
     public ConfigPack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        JsonObject jsonObject = json.getAsJsonObject();
-        JsonArray configDefinitionsJsonArray = jsonObject.get(CONFIG).getAsJsonArray();
-        Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap = create(context, configDefinitionsJsonArray);
+        var jsonObject = json.getAsJsonObject();
+        var configDefinitionsJsonArray = jsonObject.get(CONFIG).getAsJsonArray();
+        var configKeyToConfigDefinitionMap = create(context, configDefinitionsJsonArray);
         return new ConfigPack(configKeyToConfigDefinitionMap);
     }
 

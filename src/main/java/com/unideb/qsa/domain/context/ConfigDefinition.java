@@ -34,7 +34,7 @@ public final class ConfigDefinition {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConfigDefinition that = (ConfigDefinition) o;
+        var that = (ConfigDefinition) o;
         return Objects.equals(name, that.name)
                && Objects.equals(configValues, that.configValues)
                && Objects.equals(qualifiers, that.qualifiers);

@@ -18,8 +18,8 @@ public final class ConfigValuesElement implements ConfigDefinitionElement<List<C
     @Override
     public void populate(JsonElement jsonElement, JsonDeserializationContext context) {
         configValues = new ArrayList<>();
-        for (JsonElement element : jsonElement.getAsJsonArray()) {
-            ConfigValue configValue = context.deserialize(element.getAsJsonObject(), ConfigValue.class);
+        for (var element : jsonElement.getAsJsonArray()) {
+            var configValue = (ConfigValue) context.deserialize(element.getAsJsonObject(), ConfigValue.class);
             configValues.add(configValue);
         }
     }

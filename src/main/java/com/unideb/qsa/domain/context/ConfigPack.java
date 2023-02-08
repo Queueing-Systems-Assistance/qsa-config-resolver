@@ -57,7 +57,7 @@ public final class ConfigPack {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConfigPack that = (ConfigPack) o;
+        var that = (ConfigPack) o;
         return configKeyToConfigDefinitionMap.equals(that.configKeyToConfigDefinitionMap)
                && configNameToConfigDefinitionsMap.equals(that.configNameToConfigDefinitionsMap);
     }
@@ -68,11 +68,11 @@ public final class ConfigPack {
     }
 
     private Map<String, Collection<ConfigDefinition>> createConfigNameToConfigDefinitionsMap(Map<ConfigKey, ConfigDefinition> configKeyToConfigDefinitionMap) {
-        Map<String, Collection<ConfigDefinition>> configNameToConfigDefinitionsMap = new HashMap<>();
-        for (ConfigDefinition configDefinition : configKeyToConfigDefinitionMap.values()) {
-            String configNameName = configDefinition.getName();
+        var configNameToConfigDefinitionsMap = new HashMap<String, Collection<ConfigDefinition>>();
+        for (var configDefinition : configKeyToConfigDefinitionMap.values()) {
+            var configNameName = configDefinition.getName();
             if (configNameToConfigDefinitionsMap.containsKey(configNameName)) {
-                List<ConfigDefinition> definitions = new ArrayList<>(configNameToConfigDefinitionsMap.get(configNameName));
+                var definitions = new ArrayList<>(configNameToConfigDefinitionsMap.get(configNameName));
                 definitions.add(configDefinition);
                 configNameToConfigDefinitionsMap.put(configNameName, definitions);
             } else {
