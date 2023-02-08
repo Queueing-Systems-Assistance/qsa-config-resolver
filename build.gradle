@@ -2,42 +2,34 @@ plugins {
   id 'maven-publish'
 }
 
-ext {
-  /* Project Information */
-  projectGroup = 'com.unideb.qsa'
-  projectVersion = project.getProperties().get('release.version') ?: 'RELEASE.VERSION.UNKNOWN'
-  /* Secrets */
-  // Note: Use your username and token
-  githubToken = System.getenv('GITHUB_TOKEN') ?: 'YOUR_TOKEN'
-  githubUsername = System.getenv('GITHUB_USERNAME') ?: 'YOUR_USERNAME'
-  print('Release version [' + projectVersion + ']')
-}
+/* Project Information */
+def projectGroup = 'com.unideb.qsa'
+def projectVersion = project.getProperties().get('release.version') ?: 'RELEASE.VERSION.UNKNOWN'
+/* Secrets */
+// Note: Use your username and token
+def githubToken = System.getenv('GITHUB_TOKEN') ?: 'YOUR_TOKEN'
+def githubUsername = System.getenv('GITHUB_USERNAME') ?: 'YOUR_USERNAME'
+print('Release version [' + projectVersion + ']')
 
 apply plugin: 'maven-publish'
 apply plugin: 'checkstyle'
 apply plugin: 'java'
 apply plugin: 'java-library'
 
-repositories {
-  mavenLocal()
-  mavenCentral()
-  maven {
-    url 'https://jitpack.io'
-  }
+dependencies {
+  implementation libs.gson
+  implementation libs.slf4j.api
+  testImplementation libs.mockito.core
+  testImplementation libs.testng
 }
 
+
 checkstyle {
-  toolVersion = '9.2'
+  toolVersion = libs.versions.checkstyle.get()
   configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
   configDirectory = file("${rootDir}/config/checkstyle/")
   showViolations = true
   ignoreFailures = false
-}
-
-dependencies {
-  implementation 'com.google.code.gson:gson:2.10.1'
-  testImplementation 'org.mockito:mockito-core:5.1.1'
-  testImplementation 'org.testng:testng:7.7.0'
 }
 
 publishing {

@@ -1,5 +1,5 @@
 <code_scheme name="QSA-CONFIG-DOMAIN" version="173">
-  <option name="LINE_SEPARATOR" value="&#xA;" />
+  <option name="LINE_SEPARATOR" value="&#10;" />
   <option name="RIGHT_MARGIN" value="180" />
   <JavaCodeStyleSettings>
     <option name="GENERATE_FINAL_PARAMETERS" value="true" />
@@ -25,24 +25,6 @@
     <option name="JD_ADD_BLANK_AFTER_DESCRIPTION" value="false" />
     <option name="JD_PRESERVE_LINE_FEEDS" value="true" />
   </JavaCodeStyleSettings>
-  <JetCodeStyleSettings>
-    <option name="PACKAGES_TO_USE_STAR_IMPORTS">
-      <value>
-        <package name="java.util" alias="false" withSubpackages="false" />
-        <package name="kotlinx.android.synthetic" alias="false" withSubpackages="true" />
-        <package name="io.ktor" alias="false" withSubpackages="true" />
-      </value>
-    </option>
-    <option name="PACKAGES_IMPORT_LAYOUT">
-      <value>
-        <package name="" alias="false" withSubpackages="true" />
-        <package name="java" alias="false" withSubpackages="true" />
-        <package name="javax" alias="false" withSubpackages="true" />
-        <package name="kotlin" alias="false" withSubpackages="true" />
-        <package name="" alias="true" withSubpackages="true" />
-      </value>
-    </option>
-  </JetCodeStyleSettings>
   <Properties>
     <option name="SPACES_AROUND_KEY_VALUE_DELIMITER" value="true" />
     <option name="KEEP_BLANK_LINES" value="true" />
@@ -296,7 +278,7 @@
             <match>
               <AND>
                 <METHOD>true</METHOD>
-                <PRIVATE>true</PRIVATE>
+                <PUBLIC>true</PUBLIC>
                 <STATIC>true</STATIC>
               </AND>
             </match>
@@ -307,7 +289,7 @@
             <match>
               <AND>
                 <METHOD>true</METHOD>
-                <PUBLIC>true</PUBLIC>
+                <PRIVATE>true</PRIVATE>
                 <STATIC>true</STATIC>
               </AND>
             </match>
