@@ -26,6 +26,7 @@ jobs:
           cache: 'gradle'
       - name: Versioning
         id: versioning
+        shell: bash
         run: |
           echo "Branch name: ${GITHUB_REF_NAME}"
           echo "Build number: ${GITHUB_RUN_NUMBER}"
