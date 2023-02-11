@@ -1,5 +1,9 @@
 name: CI/CD
 
+env:
+  PROJECT_MAJOR_VERSION: 1
+  PROJECT_MINOR_VERSION: 1
+
 on:
   push:
     branches:
@@ -25,11 +29,13 @@ jobs:
         run: |
           echo "Branch name: ${GITHUB_REF_NAME}"
           echo "Build number: ${GITHUB_RUN_NUMBER}"
+          echo "Project Major version: ${env.PROJECT_MAJOR_VERSION}"
+          echo "Project Major version: ${{env.PROJECT_MAJOR_VERSION}}"
           BRANCH_NAME=${GITHUB_HEAD_REF}
           if [[ "${BRANCH_NAME}" != "master" ]]; then
             BRANCH_NAME=$(echo "${BRANCH_NAME}" | sed s#/#-#g | sed s/[.]/_/g | sed s#-#_#g | awk '{print $1""}') || exit
           fi
-          RELEASE_VERSION=${PROJECT_MAJOR_VERSION}.${PROJECT_MINOR_VERSION}.${GITHUB_RUN_NUMBER}
+          RELEASE_VERSION=${{env.PROJECT_MAJOR_VERSION}}.${{env.PROJECT_MINOR_VERSION}}.${GITHUB_RUN_NUMBER}
           if [[ "${BRANCH_NAME}" != "master" ]]; then
             RELEASE_VERSION="${RELEASE_VERSION}_${BRANCH_NAME}"
           fi
