@@ -1,8 +1,11 @@
 name: CI/CD
 
 on:
-  release:
-    types: [created]
+  pull_request: null
+  push:
+    branches:
+      - /^master/
+      - /^feature\/QSA-[0-9]+/
 
 jobs:
   build:
