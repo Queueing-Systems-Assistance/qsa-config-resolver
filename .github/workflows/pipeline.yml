@@ -1,0 +1,50 @@
+name: CI/CD
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Setup
+        uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+      - name: Versioning
+        run: |
+          export BRANCH_NAME=${GITHUB_HEAD_REF}
+          if [[ "${BRANCH_NAME}" != "master" ]]; then
+            BRANCH_NAME=$(echo "${BRANCH_NAME}" | sed s#/#-#g | sed s/[.]/_/g | sed s#-#_#g | awk '{print $1""}') || exit
+          fi
+          RELEASE_VERSION=${PROJECT_MAJOR_VERSION}.${PROJECT_MINOR_VERSION}.${GITHUB_RUN_NUMBER}
+          if [[ "${BRANCH_NAME}" != "master" ]]; then
+            RELEASE_VERSION="${RELEASE_VERSION}_${BRANCH_NAME}"
+          fi
+          echo "BRANCH_NAME" "${BRANCH_NAME}"
+          echo "RELEASE_VERSION" "${RELEASE_VERSION}"
+          echo "export BRANCH_NAME=${BRANCH_NAME}" >> "$BASH_ENV"
+          echo "export RELEASE_VERSION=${RELEASE_VERSION}" >> "$BASH_ENV"
+          chmod +x gradlew
+      - name: Checkstyle validation
+        run: ./gradlew checkstyleMain checkstyleTest -Prelease.version="${RELEASE_VERSION}" --no-daemon
+      - name: Build
+        run: ./gradlew -x test -x checkstyleMain -x checkstyleTest build -Prelease.version="${RELEASE_VERSION}" --no-daemon
+      - name: Running Tests
+        run: ./gradlew test -Prelease.version="${RELEASE_VERSION}" --no-daemon
+      #- name: Publish package to GitHub Packages
+      #  run: ./gradlew publish -Prelease.version="${RELEASE_VERSION}" --no-daemon
+      #- name: Git Tagging
+      #  run: |
+      #    git config --global user.email "builds@github-ci.com"
+      #    git config --global user.name "GitHub CI"
+      #    git tag -a -f "${RELEASE_VERSION}" -m "${RELEASE_VERSION}"
+      #    git push -f "https://${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}" refs/tags/"${RELEASE_VERSION}"
+      #- name: Jira Notify

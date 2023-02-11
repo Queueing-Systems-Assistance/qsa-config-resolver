@@ -34,10 +34,6 @@ jobs:
     steps:
       - checkout
       - set_local_environment
-      - restore_cache:
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-      - restore_cache:
-          key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Checkstyle validation
           command: |
@@ -46,14 +42,6 @@ jobs:
           name: Running Tests
           command: |
             ./gradlew test -Prelease.version="${RELEASE_VERSION}"
-      - save_cache:
-          paths:
-            - ~/.gradle/wrapper
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-      - save_cache:
-          paths:
-            - ~/.gradle/caches
-          key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Build
           command: |
