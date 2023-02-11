@@ -29,7 +29,6 @@ jobs:
         run: |
           echo "Branch name: ${GITHUB_REF_NAME}"
           echo "Build number: ${GITHUB_RUN_NUMBER}"
-          echo "Project Major version: ${env.PROJECT_MAJOR_VERSION}"
           echo "Project Major version: ${{env.PROJECT_MAJOR_VERSION}}"
           BRANCH_NAME=${GITHUB_HEAD_REF}
           if [[ "${BRANCH_NAME}" != "master" ]]; then
