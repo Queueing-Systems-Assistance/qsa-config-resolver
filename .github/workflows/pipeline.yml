@@ -21,8 +21,11 @@ jobs:
           java-version: '17'
           cache: 'gradle'
       - name: Versioning
+        id: versioning
         run: |
-          export BRANCH_NAME=${GITHUB_HEAD_REF}
+          echo "Branch name: ${GITHUB_REF_NAME}"
+          echo "Build number: ${GITHUB_RUN_NUMBER}"
+          BRANCH_NAME=${GITHUB_HEAD_REF}
           if [[ "${BRANCH_NAME}" != "master" ]]; then
             BRANCH_NAME=$(echo "${BRANCH_NAME}" | sed s#/#-#g | sed s/[.]/_/g | sed s#-#_#g | awk '{print $1""}') || exit
           fi
@@ -32,21 +35,21 @@ jobs:
           fi
           echo "BRANCH_NAME" "${BRANCH_NAME}"
           echo "RELEASE_VERSION" "${RELEASE_VERSION}"
-          echo "export BRANCH_NAME=${BRANCH_NAME}" >> "$BASH_ENV"
-          echo "export RELEASE_VERSION=${RELEASE_VERSION}" >> "$BASH_ENV"
+          echo "export BRANCH_NAME=${BRANCH_NAME}" >> "$GITHUB_OUTPUT"
+          echo "export RELEASE_VERSION=${RELEASE_VERSION}" >> "$GITHUB_OUTPUT"
           chmod +x gradlew
       - name: Checkstyle validation
-        run: ./gradlew checkstyleMain checkstyleTest -Prelease.version="${RELEASE_VERSION}" --no-daemon
+        run: ./gradlew checkstyleMain checkstyleTest -Prelease.version="${{steps.versioning.outputs.RELEASE_VERSION}}" --no-daemon
       - name: Build
-        run: ./gradlew -x test -x checkstyleMain -x checkstyleTest build -Prelease.version="${RELEASE_VERSION}" --no-daemon
+        run: ./gradlew -x test -x checkstyleMain -x checkstyleTest build -Prelease.version="${{steps.versioning.outputs.RELEASE_VERSION}}" --no-daemon
       - name: Running Tests
-        run: ./gradlew test -Prelease.version="${RELEASE_VERSION}" --no-daemon
+        run: ./gradlew test -Prelease.version="${{steps.versioning.outputs.RELEASE_VERSION}}" --no-daemon
       #- name: Publish package to GitHub Packages
-      #  run: ./gradlew publish -Prelease.version="${RELEASE_VERSION}" --no-daemon
+      #  run: ./gradlew publish -Prelease.version="${{steps.versioning.outputs.RELEASE_VERSION}}" --no-daemon
       #- name: Git Tagging
       #  run: |
       #    git config --global user.email "builds@github-ci.com"
       #    git config --global user.name "GitHub CI"
-      #    git tag -a -f "${RELEASE_VERSION}" -m "${RELEASE_VERSION}"
-      #    git push -f "https://${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}" refs/tags/"${RELEASE_VERSION}"
+      #    git tag -a -f "${{steps.versioning.outputs.RELEASE_VERSION}}" -m "${{steps.versioning.outputs.RELEASE_VERSION}}"
+      #    git push -f "https://${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}" refs/tags/"${{steps.versioning.outputs.RELEASE_VERSION}}"
       #- name: Jira Notify
