@@ -1,4 +1,4 @@
-package com.unideb.qsa.config.resolver.domain.deserializer.elements;
+package com.unideb.qsa.config.resolver.deserializer.elements;
 
 import java.util.ArrayList;
 import java.util.List;

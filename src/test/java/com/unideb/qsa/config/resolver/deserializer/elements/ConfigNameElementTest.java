@@ -1,12 +1,13 @@
-package com.unideb.qsa.config.resolver.domain.deserializer.elements;
+package com.unideb.qsa.config.resolver.deserializer.elements;
 
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.MockitoAnnotations.openMocks;
 import static org.testng.Assert.assertEquals;
 
 import org.mockito.Mock;
+import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.google.gson.Gson;
@@ -16,6 +17,7 @@ import com.google.gson.JsonElement;
 /**
  * Unit tests for {@link ConfigNameElement}.
  */
+@Listeners(MockitoTestNGListener.class)
 public class ConfigNameElementTest {
 
     private static final String FILLED_CONFIG_NAME = "configName";
@@ -31,7 +33,6 @@ public class ConfigNameElementTest {
 
     @BeforeMethod
     public void setup() {
-        openMocks(this);
         configNameElement = new ConfigNameElement();
     }
 

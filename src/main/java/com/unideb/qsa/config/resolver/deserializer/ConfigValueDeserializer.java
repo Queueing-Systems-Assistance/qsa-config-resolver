@@ -1,6 +1,6 @@
-package com.unideb.qsa.config.resolver.domain.deserializer;
+package com.unideb.qsa.config.resolver.deserializer;
 
-import static com.unideb.qsa.config.resolver.domain.deserializer.DeserializationConstants.VALUE_ELEMENT;
+import static com.unideb.qsa.config.resolver.deserializer.DeserializationConstants.VALUE_ELEMENT;
 
 import java.lang.reflect.Type;
 import java.util.HashSet;

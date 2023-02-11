@@ -1,7 +1,8 @@
-rootProject.name = 'qsa-config'
+rootProject.name = 'qsa-config-resolver'
 
 dependencyResolutionManagement {
   repositories {
+    mavenLocal()
     mavenCentral()
     maven {
       url 'https://jitpack.io'
@@ -9,11 +10,13 @@ dependencyResolutionManagement {
   }
   versionCatalogs {
     libs {
-      version('checkstyle', '9.2')
+      version('checkstyle', '10.7.0')
+      library('aws-lambda', 'software.amazon.awssdk:lambda:2.20.1')
       library('gson', 'com.google.code.gson:gson:2.10.1')
-      library('mockito-core', 'org.mockito:mockito-core:5.1.1')
-      library('testng', 'org.testng:testng:7.7.0')
       library('slf4j-api', 'org.slf4j:slf4j-api:2.0.6')
+      library('mockito-core', 'org.mockito:mockito-core:5.1.1')
+      library('mockito-testng', 'org.mockito:mockito-testng:0.4.31')
+      library('testng', 'org.testng:testng:7.7.0')
     }
   }
 }

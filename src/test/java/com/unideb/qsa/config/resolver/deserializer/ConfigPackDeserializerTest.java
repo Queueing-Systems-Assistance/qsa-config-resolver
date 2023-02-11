@@ -1,8 +1,7 @@
-package com.unideb.qsa.config.resolver.domain.deserializer;
+package com.unideb.qsa.config.resolver.deserializer;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.openMocks;
 import static org.testng.Assert.assertTrue;
 
 import java.lang.reflect.Type;
@@ -10,7 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.mockito.Mock;
+import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.google.gson.Gson;
@@ -26,6 +27,7 @@ import com.unideb.qsa.config.resolver.domain.context.ConfigValue;
 /**
  * Unit tests for {@link ConfigPackDeserializer}.
  */
+@Listeners(MockitoTestNGListener.class)
 public class ConfigPackDeserializerTest {
 
     private static final ConfigValue CONFIG_VALUE_WITH_QUALIFIER = new ConfigValue("valueHu", Map.of("locale", Set.of("hu")));
@@ -42,12 +44,10 @@ public class ConfigPackDeserializerTest {
             + "[{\"value\":\"valueHu\",\"locale\":[\"hu\"]},{\"value\":\"valueDefault\"}]}", JsonElement.class);
     @Mock
     private JsonDeserializationContext jsonDeserializationContext;
-
     private ConfigPackDeserializer configPackDeserializer;
 
     @BeforeMethod
     public void setup() {
-        openMocks(this);
         configPackDeserializer = new ConfigPackDeserializer();
     }
 
@@ -60,15 +60,15 @@ public class ConfigPackDeserializerTest {
         ConfigPack actual = configPackDeserializer.deserialize(JSON_DATA, TYPE_TOKEN, jsonDeserializationContext);
         // THEN
         verify(jsonDeserializationContext).deserialize(JSON_INNER_DATA, ConfigDefinition.class);
-        assertTrue(actual.getKeyToDefinitionsMap().entrySet().containsAll(expected.getKeyToDefinitionsMap().entrySet()));
-        assertTrue(actual.getKeyToDefinitionsMap().keySet().containsAll(expected.getKeyToDefinitionsMap().keySet()));
-        assertTrue(actual.getNameToDefinitions().keySet().containsAll(expected.getNameToDefinitions().keySet()));
-        assertTrue(actual.getNameToDefinitions().keySet().containsAll(expected.getNameToDefinitions().keySet()));
+        assertTrue(actual.getKeysToDefinitions().entrySet().containsAll(expected.getKeysToDefinitions().entrySet()));
+        assertTrue(actual.getKeysToDefinitions().keySet().containsAll(expected.getKeysToDefinitions().keySet()));
+        assertTrue(actual.getNamesToDefinitions().keySet().containsAll(expected.getNamesToDefinitions().keySet()));
+        assertTrue(actual.getNamesToDefinitions().keySet().containsAll(expected.getNamesToDefinitions().keySet()));
     }
 
     private ConfigPack createExpectedConfigPack() {
         ConfigDefinition configDefinition = CONFIG_DEFINITION;
-        ConfigKey configKey = new ConfigKey(configDefinition);
+        ConfigKey configKey = new ConfigKey(configDefinition.name(), configDefinition.qualifiers());
         return new ConfigPack(Map.of(configKey, configDefinition));
     }
 }

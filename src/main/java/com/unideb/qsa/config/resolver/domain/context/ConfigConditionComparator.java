@@ -19,8 +19,8 @@ public final class ConfigConditionComparator implements Comparator<ConfigValue> 
 
     @Override
     public int compare(ConfigValue configValue1, ConfigValue configValue2) {
-        var qualifiersCv1 = configValue1.getQualifiers();
-        var qualifiersCv2 = configValue2.getQualifiers();
+        var qualifiersCv1 = configValue1.qualifiers();
+        var qualifiersCv2 = configValue2.qualifiers();
         for (var qualifierField : configCondition) {
             var result = isQualifiersDifferent(qualifiersCv1, qualifiersCv2, qualifierField);
             if (result != null) {
@@ -46,14 +46,14 @@ public final class ConfigConditionComparator implements Comparator<ConfigValue> 
     }
 
     private int compareBasedOnValueString(ConfigValue configValue1, ConfigValue configValue2) {
-        return configValue1.getValue().compareTo(configValue2.getValue());
+        return configValue1.value().compareTo(configValue2.value());
     }
 
     private int compareBasedOnQualifierValues(ConfigValue configValue1, ConfigValue configValue2) {
         for (var qualifierField : configCondition) {
-            if (configValue1.getQualifiers().containsKey(qualifierField)) {
-                var qualifierValues1 = configValue1.getQualifiers().get(qualifierField);
-                var qualifierValues2 = configValue2.getQualifiers().get(qualifierField);
+            if (configValue1.qualifiers().containsKey(qualifierField)) {
+                var qualifierValues1 = configValue1.qualifiers().get(qualifierField);
+                var qualifierValues2 = configValue2.qualifiers().get(qualifierField);
                 var qualifierValuesNumberCompare = compareBasedOnNumberOfQualifierValues(qualifierValues1, qualifierValues2);
                 if (qualifierValuesNumberCompare != 0) {
                     return qualifierValuesNumberCompare;

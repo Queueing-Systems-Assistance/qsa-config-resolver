@@ -17,17 +17,17 @@ apply plugin: 'java'
 apply plugin: 'java-library'
 
 dependencies {
+  implementation libs.aws.lambda
   implementation libs.gson
   implementation libs.slf4j.api
   testImplementation libs.mockito.core
+  testImplementation libs.mockito.testng
   testImplementation libs.testng
 }
 
 
 checkstyle {
   toolVersion = libs.versions.checkstyle.get()
-  configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
-  configDirectory = file("${rootDir}/config/checkstyle/")
   showViolations = true
   ignoreFailures = false
 }
@@ -36,7 +36,7 @@ publishing {
   repositories {
     maven {
       name = 'GitHubPackages'
-      url = uri('https://maven.pkg.github.com/queueing-systems-assistance/qsa')
+      url = uri('https://maven.pkg.github.com/queueing-systems-assistance/qsa-config-resolver')
       credentials {
         username = githubUsername
         password = githubToken

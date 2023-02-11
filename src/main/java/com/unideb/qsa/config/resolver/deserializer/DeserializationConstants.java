@@ -1,4 +1,4 @@
-package com.unideb.qsa.config.resolver.domain.deserializer;
+package com.unideb.qsa.config.resolver.deserializer;
 
 /**
  * Constants used by Deserialization classes.

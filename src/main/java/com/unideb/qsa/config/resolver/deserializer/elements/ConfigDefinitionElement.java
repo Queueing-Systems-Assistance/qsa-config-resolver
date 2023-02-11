@@ -1,4 +1,4 @@
-package com.unideb.qsa.config.resolver.domain.deserializer.elements;
+package com.unideb.qsa.config.resolver.deserializer.elements;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
@@ -12,7 +12,7 @@ public interface ConfigDefinitionElement<T> {
     /**
      * Populates the given {@link T} element from the json.
      * @param jsonElement config in json
-     * @param context     holds different deserializers
+     * @param context holds different deserializers
      */
     void populate(JsonElement jsonElement, JsonDeserializationContext context);
 

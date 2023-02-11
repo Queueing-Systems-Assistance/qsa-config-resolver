@@ -1,4 +1,4 @@
-package com.unideb.qsa.config.resolver.domain.deserializer;
+package com.unideb.qsa.config.resolver.deserializer;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -13,14 +13,6 @@ import com.unideb.qsa.config.resolver.domain.context.ConfigValue;
 public final class JsonDeserializerHelper {
 
     private JsonDeserializerHelper() {
-    }
-
-    private static GsonBuilder register() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(ConfigPack.class, new ConfigPackDeserializer());
-        gsonBuilder.registerTypeAdapter(ConfigDefinition.class, new ConfigDefinitionDeserializer());
-        gsonBuilder.registerTypeAdapter(ConfigValue.class, new ConfigValueDeserializer());
-        return gsonBuilder;
     }
 
     /**
@@ -38,7 +30,7 @@ public final class JsonDeserializerHelper {
      * @return instance of {@link ConfigPack}.
      */
     public static ConfigPack deserializeToConfigPack(String configPackJson) {
-        return new ConfigPack(register().create().fromJson(configPackJson, ConfigPack.class).getKeyToDefinitionsMap());
+        return new ConfigPack(register().create().fromJson(configPackJson, ConfigPack.class).getKeysToDefinitions());
     }
 
     /**
@@ -48,6 +40,14 @@ public final class JsonDeserializerHelper {
      */
     public static ConfigPack deserializeToConfigPack(JsonArray configJsonArray) {
         return deserializeToConfigPack(configJsonArray.toString());
+    }
+
+    private static GsonBuilder register() {
+        var gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(ConfigPack.class, new ConfigPackDeserializer());
+        gsonBuilder.registerTypeAdapter(ConfigDefinition.class, new ConfigDefinitionDeserializer());
+        gsonBuilder.registerTypeAdapter(ConfigValue.class, new ConfigValueDeserializer());
+        return gsonBuilder;
     }
 
 }

@@ -1,9 +1,8 @@
-package com.unideb.qsa.config.resolver.domain.deserializer;
+package com.unideb.qsa.config.resolver.deserializer;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.MockitoAnnotations.openMocks;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -12,7 +11,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.mockito.Mock;
+import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.google.gson.Gson;
@@ -26,6 +27,7 @@ import com.unideb.qsa.config.resolver.domain.exception.ConfigValueException;
 /**
  * Unit tests for {@link ConfigValueDeserializer}.
  */
+@Listeners(MockitoTestNGListener.class)
 public class ConfigValueDeserializerTest {
 
     private static final Type TYPE_TOKEN = new TypeToken<ConfigValue>() {}.getType();
@@ -40,12 +42,10 @@ public class ConfigValueDeserializerTest {
 
     @Mock
     private JsonDeserializationContext jsonDeserializationContext;
-
     private ConfigValueDeserializer configValueDeserializer;
 
     @BeforeMethod
     public void setup() {
-        openMocks(this);
         configValueDeserializer = new ConfigValueDeserializer();
     }
 
@@ -58,9 +58,9 @@ public class ConfigValueDeserializerTest {
         ConfigValue actual = configValueDeserializer.deserialize(JSON_DATA, TYPE_TOKEN, jsonDeserializationContext);
         // THEN
         verify(jsonDeserializationContext).deserialize(JSON_QUALIFIER_VALUES, Set.class);
-        assertEquals(actual.getValue(), expected.getValue());
-        assertTrue(actual.getQualifiers().keySet().containsAll(expected.getQualifiers().keySet()));
-        assertTrue(actual.getQualifiers().entrySet().containsAll(expected.getQualifiers().entrySet()));
+        assertEquals(actual.value(), expected.value());
+        assertTrue(actual.qualifiers().keySet().containsAll(expected.qualifiers().keySet()));
+        assertTrue(actual.qualifiers().entrySet().containsAll(expected.qualifiers().entrySet()));
     }
 
 
@@ -72,9 +72,9 @@ public class ConfigValueDeserializerTest {
         ConfigValue actual = configValueDeserializer.deserialize(EMPTY_QUALIFIER_JSON_DATA, TYPE_TOKEN, jsonDeserializationContext);
         // THEN
         verifyNoInteractions(jsonDeserializationContext);
-        assertEquals(actual.getValue(), expected.getValue());
-        assertTrue(actual.getQualifiers().keySet().containsAll(expected.getQualifiers().keySet()));
-        assertTrue(actual.getQualifiers().entrySet().containsAll(expected.getQualifiers().entrySet()));
+        assertEquals(actual.value(), expected.value());
+        assertTrue(actual.qualifiers().keySet().containsAll(expected.qualifiers().keySet()));
+        assertTrue(actual.qualifiers().entrySet().containsAll(expected.qualifiers().entrySet()));
     }
 
     @Test(expectedExceptions = ConfigValueException.class)

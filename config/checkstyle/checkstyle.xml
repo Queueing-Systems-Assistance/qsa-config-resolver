@@ -47,7 +47,7 @@
     <module name="MissingJavadocType" />
     <module name="JavadocStyle" />
     <module name="MissingJavadocMethod">
-      <property name="tokens" value="METHOD_DEF,ANNOTATION_FIELD_DEF,COMPACT_CTOR_DEF" />
+      <property name="tokens" value="METHOD_DEF,ANNOTATION_FIELD_DEF" />
     </module>
     <module name="InvalidJavadocPosition" />
     <module name="SingleLineJavadoc" />
@@ -107,14 +107,14 @@
     <module name="AnnotationUseStyle" />
     <module name="ImportOrder">
       <property name="option" value="top" />
-      <property name="groups" value="java,javax,org,com,io,com.unideb.qsa,*" />
+      <property name="groups" value="java,javax,org,com,io,software,com.unideb.qsa,*" />
       <property name="separated" value="true" />
       <property name="sortStaticImportsAlphabetically" value="true" />
     </module>
     <module name="UpperEll" />
   </module>
   <module name="SuppressionFilter">
-    <property name="file" value="${config_loc}/checkstyle_suppressions.xml" />
+    <property name="file" value="${config_loc}/suppressions.xml" />
   </module>
   <module name="RegexpHeader">
     <property name="header" value="package" />

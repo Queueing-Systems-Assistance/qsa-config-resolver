@@ -8,8 +8,8 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.unideb.qsa.config.resolver.deserializer.JsonDeserializerHelper;
 import com.unideb.qsa.config.resolver.domain.context.ConfigPack;
-import com.unideb.qsa.config.resolver.domain.deserializer.JsonDeserializerHelper;
 import com.unideb.qsa.config.resolver.domain.exception.ConfigPackException;
 
 /**
@@ -28,7 +28,6 @@ public class UrlConfigPackSource implements ConfigPackSource {
     @Override
     public List<ConfigPack> getConfigPacks() {
         return configUris.stream()
-                         .filter(this::isConfigLocationURL)
                          .map(URI::create)
                          .map(this::getResponse)
                          .map(HttpResponse::body)

@@ -2,7 +2,6 @@ package com.unideb.qsa.config.resolver.datasource.configdefinition;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.openMocks;
 import static org.testng.Assert.assertEquals;
 
 import java.util.Collections;
@@ -11,7 +10,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.mockito.Mock;
+import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.unideb.qsa.config.resolver.datasource.configpack.ConfigPackSource;
@@ -24,6 +25,7 @@ import com.unideb.qsa.config.resolver.domain.context.Qualifier;
 /**
  * Unit tests for {@link ConfigDefinitionSource}.
  */
+@Listeners(MockitoTestNGListener.class)
 public class ConfigDefinitionSourceTest {
 
     private static final String CONFIG_NAME = "CONFIG_NAME";
@@ -44,7 +46,6 @@ public class ConfigDefinitionSourceTest {
 
     @BeforeMethod
     public void setup() {
-        openMocks(this);
         configDefinitionSource = new ConfigDefinitionSource(configPackSource);
     }
 
@@ -53,7 +54,7 @@ public class ConfigDefinitionSourceTest {
         // GIVEN
         given(configPackSource.getConfigPacks()).willReturn(createTestConfigPacks());
         // WHEN
-        var actual = configDefinitionSource.getConfigDefinitions(CONFIG_NAME, QUALIFIER);
+        List<ConfigDefinition> actual = configDefinitionSource.getConfigDefinitions(CONFIG_NAME, QUALIFIER);
         // THEN
         verify(configPackSource).getConfigPacks();
         assertEquals(actual.size(), CONTAINS_ONE_ELEMENT);
@@ -61,7 +62,7 @@ public class ConfigDefinitionSourceTest {
     }
 
     private List<ConfigPack> createTestConfigPacks() {
-        var configKey = new ConfigKey(CONFIG_DEFINITION);
+        ConfigKey configKey = new ConfigKey(CONFIG_DEFINITION.name(), CONFIG_DEFINITION.qualifiers());
         return Collections.singletonList(new ConfigPack(Map.of(configKey, CONFIG_DEFINITION)));
     }
 

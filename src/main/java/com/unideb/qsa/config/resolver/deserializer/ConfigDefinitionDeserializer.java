@@ -1,8 +1,8 @@
-package com.unideb.qsa.config.resolver.domain.deserializer;
+package com.unideb.qsa.config.resolver.deserializer;
 
-import static com.unideb.qsa.config.resolver.domain.deserializer.DeserializationConstants.CONFIG_CONDITION;
-import static com.unideb.qsa.config.resolver.domain.deserializer.DeserializationConstants.CONFIG_ELEMENT;
-import static com.unideb.qsa.config.resolver.domain.deserializer.DeserializationConstants.VALUES_ELEMENT;
+import static com.unideb.qsa.config.resolver.deserializer.DeserializationConstants.CONFIG_CONDITION;
+import static com.unideb.qsa.config.resolver.deserializer.DeserializationConstants.CONFIG_ELEMENT;
+import static com.unideb.qsa.config.resolver.deserializer.DeserializationConstants.VALUES_ELEMENT;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -18,13 +18,13 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 
+import com.unideb.qsa.config.resolver.deserializer.elements.ConfigConditionElement;
+import com.unideb.qsa.config.resolver.deserializer.elements.ConfigDefinitionElement;
+import com.unideb.qsa.config.resolver.deserializer.elements.ConfigNameElement;
+import com.unideb.qsa.config.resolver.deserializer.elements.ConfigValuesElement;
 import com.unideb.qsa.config.resolver.domain.context.ConfigConditionComparator;
 import com.unideb.qsa.config.resolver.domain.context.ConfigDefinition;
 import com.unideb.qsa.config.resolver.domain.context.ConfigValue;
-import com.unideb.qsa.config.resolver.domain.deserializer.elements.ConfigConditionElement;
-import com.unideb.qsa.config.resolver.domain.deserializer.elements.ConfigDefinitionElement;
-import com.unideb.qsa.config.resolver.domain.deserializer.elements.ConfigNameElement;
-import com.unideb.qsa.config.resolver.domain.deserializer.elements.ConfigValuesElement;
 import com.unideb.qsa.config.resolver.domain.exception.ConfigDefinitionException;
 
 /**
@@ -83,7 +83,7 @@ public class ConfigDefinitionDeserializer implements JsonDeserializer<ConfigDefi
             throw new ConfigDefinitionException(CONFIG_VALUES_EXCEPTION);
         }
         var usedQualifiers = new HashSet<String>();
-        configValues.forEach(configValue -> usedQualifiers.addAll(configValue.getQualifiers().keySet()));
+        configValues.forEach(configValue -> usedQualifiers.addAll(configValue.qualifiers().keySet()));
         checkConfigQualifiers(configCondition, usedQualifiers);
     }
 

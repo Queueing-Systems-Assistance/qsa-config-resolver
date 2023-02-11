@@ -34,7 +34,7 @@ public class DefaultConfigResolver implements ConfigResolver {
     public Optional<String> resolve(String configName, Qualifier qualifier) {
         var configDefinitions = configDefinitionSource.getConfigDefinitions(configName, qualifier);
         var resolvedConfigValue = resolve(configName, qualifier, configDefinitions);
-        return resolvedConfigValue.map(ConfigValue::getValue);
+        return resolvedConfigValue.map(ConfigValue::value);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class DefaultConfigResolver implements ConfigResolver {
 
     private Optional<ConfigValue> getConfigDefinition(ConfigDefinition configDefinition, Qualifier context) {
         return configDefinition
-                .getConfigValues()
+                .configValues()
                 .stream()
                 .filter(configValue -> doesConfigValueMatchContext(configValue, context))
                 .findFirst();
@@ -68,7 +68,7 @@ public class DefaultConfigResolver implements ConfigResolver {
 
     private boolean doesConfigValueMatchContext(ConfigValue configValue, Qualifier givenQualifier) {
         return configValue
-                .getQualifiers()
+                .qualifiers()
                 .entrySet()
                 .stream()
                 .noneMatch(qualifier ->

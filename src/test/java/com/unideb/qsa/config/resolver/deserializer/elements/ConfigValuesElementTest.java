@@ -1,8 +1,7 @@
-package com.unideb.qsa.config.resolver.domain.deserializer.elements;
+package com.unideb.qsa.config.resolver.deserializer.elements;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.openMocks;
 import static org.testng.Assert.assertEquals;
 
 import java.util.List;
@@ -10,7 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.mockito.Mock;
+import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.google.gson.Gson;
@@ -22,6 +23,7 @@ import com.unideb.qsa.config.resolver.domain.context.ConfigValue;
 /**
  * Unit tests for {@link ConfigValuesElement}.
  */
+@Listeners(MockitoTestNGListener.class)
 public class ConfigValuesElementTest {
 
     private static final Gson GSON = new Gson();
@@ -38,7 +40,6 @@ public class ConfigValuesElementTest {
 
     @BeforeMethod
     public void setup() {
-        openMocks(this);
         configValuesElement = new ConfigValuesElement();
     }
 

@@ -20,20 +20,20 @@ public class ConfigDefinitionSource {
     private static final String DEFAULT_CONFIG_QUALIFIER = "name";
     private static final String EMPTY_QUALIFIER = "";
 
-    private final ConfigPackSource compositeConfigPackSource;
+    private final ConfigPackSource configPackSource;
 
-    public ConfigDefinitionSource(ConfigPackSource compositeConfigPackSource) {
-        this.compositeConfigPackSource = compositeConfigPackSource;
+    public ConfigDefinitionSource(ConfigPackSource configPackSource) {
+        this.configPackSource = configPackSource;
     }
 
     /**
      * Resolves {@link ConfigDefinition} based on the config name and qualifier.
      * @param configName config name
-     * @param qualifier  condition
+     * @param qualifier condition
      * @return resolved {@link ConfigDefinition}s
      */
     public List<ConfigDefinition> getConfigDefinitions(String configName, Qualifier qualifier) {
-        return compositeConfigPackSource
+        return configPackSource
                 .getConfigPacks()
                 .stream()
                 .map(configPack -> getConfigDefinitions(configPack, configName, qualifier))
@@ -70,7 +70,7 @@ public class ConfigDefinitionSource {
 
     private Optional<ConfigDefinition> resolveConfigDefinition(ConfigPack configPack, String configName, Map<String, String> qualifiers) {
         var configKey = new ConfigKey(configName, qualifiers);
-        return configPack.getKeyToDefinitionsMap()
+        return configPack.getKeysToDefinitions()
                          .entrySet()
                          .stream()
                          .filter(entry -> entry.getKey().equals(configKey))

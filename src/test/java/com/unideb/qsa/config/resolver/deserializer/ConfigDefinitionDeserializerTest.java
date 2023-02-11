@@ -1,8 +1,7 @@
-package com.unideb.qsa.config.resolver.domain.deserializer;
+package com.unideb.qsa.config.resolver.deserializer;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.openMocks;
 import static org.testng.Assert.assertEquals;
 
 import java.lang.reflect.Type;
@@ -10,7 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.mockito.Mock;
+import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.google.gson.Gson;
@@ -24,6 +25,7 @@ import com.unideb.qsa.config.resolver.domain.context.ConfigValue;
 /**
  * Unit tests for {@link ConfigDefinitionDeserializer}.
  */
+@Listeners(MockitoTestNGListener.class)
 public class ConfigDefinitionDeserializerTest {
 
     public static final String CONFIG_NAME = "CONFIG_NAME";
@@ -44,7 +46,6 @@ public class ConfigDefinitionDeserializerTest {
 
     @BeforeMethod
     public void setup() {
-        openMocks(this);
         configDefinitionDeserializer = new ConfigDefinitionDeserializer();
     }
 
@@ -59,8 +60,8 @@ public class ConfigDefinitionDeserializerTest {
         // THEN
         verify(jsonDeserializationContext).deserialize(JSON_VALUE_DEFAULT, TYPE_TOKEN);
         verify(jsonDeserializationContext).deserialize(JSON_VALUE_QUALIFIER, TYPE_TOKEN);
-        assertEquals(actual.getConfigValues(), expected.getConfigValues());
-        assertEquals(actual.getName(), expected.getName());
-        assertEquals(actual.getQualifiers(), expected.getQualifiers());
+        assertEquals(actual.configValues(), expected.configValues());
+        assertEquals(actual.name(), expected.name());
+        assertEquals(actual.qualifiers(), expected.qualifiers());
     }
 }

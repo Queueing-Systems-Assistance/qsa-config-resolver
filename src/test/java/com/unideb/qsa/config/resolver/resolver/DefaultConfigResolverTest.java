@@ -2,7 +2,6 @@ package com.unideb.qsa.config.resolver.resolver;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.openMocks;
 import static org.testng.Assert.assertEquals;
 
 import java.util.List;
@@ -11,7 +10,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.mockito.Mock;
+import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.unideb.qsa.config.resolver.datasource.configdefinition.ConfigDefinitionSource;
@@ -22,6 +23,7 @@ import com.unideb.qsa.config.resolver.domain.context.Qualifier;
 /**
  * Unit tests for {@link DefaultConfigResolver}.
  */
+@Listeners(MockitoTestNGListener.class)
 public class DefaultConfigResolverTest {
 
     private static final String CONFIG_NAME = "CONFIG_NAME";
@@ -38,7 +40,6 @@ public class DefaultConfigResolverTest {
 
     @BeforeMethod
     public void setup() {
-        openMocks(this);
         defaultConfigResolver = new DefaultConfigResolver(configDefinitionSource);
     }
 

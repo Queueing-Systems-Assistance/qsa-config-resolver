@@ -1,4 +1,4 @@
-package com.unideb.qsa.config.resolver.domain.deserializer.elements;
+package com.unideb.qsa.config.resolver.deserializer.elements;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;

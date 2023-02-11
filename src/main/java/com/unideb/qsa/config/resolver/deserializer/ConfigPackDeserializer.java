@@ -1,4 +1,4 @@
-package com.unideb.qsa.config.resolver.domain.deserializer;
+package com.unideb.qsa.config.resolver.deserializer;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -26,13 +26,14 @@ public class ConfigPackDeserializer implements JsonDeserializer<ConfigPack> {
     public ConfigPack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         var jsonObject = json.getAsJsonObject();
         var configDefinitionsJsonArray = jsonObject.get(CONFIG).getAsJsonArray();
-        var configKeyToConfigDefinitionMap = create(context, configDefinitionsJsonArray);
-        return new ConfigPack(configKeyToConfigDefinitionMap);
+        var keysToDefinitions = create(context, configDefinitionsJsonArray);
+        return new ConfigPack(keysToDefinitions);
     }
 
-    private Map<ConfigKey, ConfigDefinition> create(JsonDeserializationContext context, JsonArray configDefinitionsJsonArray) {
-        return StreamSupport.stream(configDefinitionsJsonArray.spliterator(), true)
+    private Map<ConfigKey, ConfigDefinition> create(JsonDeserializationContext context, JsonArray configDefinitions) {
+        return StreamSupport.stream(configDefinitions.spliterator(), true)
                             .map(configDefinitionJsonElement -> (ConfigDefinition) context.deserialize(configDefinitionJsonElement, ConfigDefinition.class))
-                            .collect(Collectors.toMap(ConfigKey::new, propertyDefinition -> propertyDefinition));
+                            .collect(Collectors.toMap(configDefinition -> new ConfigKey(configDefinition.name(), configDefinition.qualifiers()),
+                                    propertyDefinition -> propertyDefinition));
     }
 }

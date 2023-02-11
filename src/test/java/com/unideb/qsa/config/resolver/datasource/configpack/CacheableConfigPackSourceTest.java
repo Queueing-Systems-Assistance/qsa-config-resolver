@@ -3,14 +3,15 @@ package com.unideb.qsa.config.resolver.datasource.configpack;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.openMocks;
 import static org.testng.Assert.assertEquals;
 
 import java.util.List;
 import java.util.Map;
 
 import org.mockito.Mock;
+import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.unideb.qsa.config.resolver.domain.context.ConfigPack;
@@ -18,6 +19,7 @@ import com.unideb.qsa.config.resolver.domain.context.ConfigPack;
 /**
  * Unit tests for {@link CacheableConfigPackSource}.
  */
+@Listeners(MockitoTestNGListener.class)
 public class CacheableConfigPackSourceTest {
 
     private static final ConfigPack CONFIG_PACK = new ConfigPack(Map.of());
@@ -25,13 +27,10 @@ public class CacheableConfigPackSourceTest {
     @Mock
     private ConfigPackSource configPackSource;
 
-
     private CacheableConfigPackSource cacheableConfigPackSource;
-
 
     @BeforeMethod
     public void setup() {
-        openMocks(this);
         cacheableConfigPackSource = new CacheableConfigPackSource(configPackSource, 1);
     }
 
@@ -48,6 +47,4 @@ public class CacheableConfigPackSourceTest {
         assertEquals(actual1, expected);
         assertEquals(actual2, expected);
     }
-
-
 }

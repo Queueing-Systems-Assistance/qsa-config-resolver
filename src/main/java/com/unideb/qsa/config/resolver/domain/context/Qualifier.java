@@ -59,7 +59,7 @@ public final class Qualifier {
 
         /**
          * Adds the given key and value to the qualifiers.
-         * @param key   key
+         * @param key key
          * @param value value
          * @return {@link Qualifier.Builder}
          */

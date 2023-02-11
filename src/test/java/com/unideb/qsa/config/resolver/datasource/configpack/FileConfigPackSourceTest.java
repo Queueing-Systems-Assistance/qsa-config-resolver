@@ -16,9 +16,8 @@ import com.unideb.qsa.config.resolver.domain.exception.ConfigPackException;
 public class FileConfigPackSourceTest {
 
     private static final ConfigPack CONFIG_PACK = new ConfigPack(Map.of());
-    private static final String VALID_PATH = "src/test/resources";
-    private static final String VALID_URL = "https://data/config2";
-    private static final List<String> CONFIG_URIS = List.of(VALID_PATH, VALID_URL);
+    private static final String VALID_PATH = "src/test/resources/test-config-pack.json";
+    private static final List<String> CONFIG_URIS = List.of(VALID_PATH);
     private static final String INVALID_PATH = "src/test";
 
     private FileConfigPackSource fileConfigPackSource;
