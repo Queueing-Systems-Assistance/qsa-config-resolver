@@ -2,49 +2,41 @@ plugins {
   id 'maven-publish'
 }
 
-ext {
-  /* Project Information */
-  projectGroup = 'com.unideb.qsa'
-  projectVersion = project.getProperties().get('release.version') ?: 'RELEASE.VERSION.UNKNOWN'
-  /* Secrets */
-  // Note: Use your username and token
-  githubToken = System.getenv('GITHUB_TOKEN') ?: 'YOUR_TOKEN'
-  githubUsername = System.getenv('GITHUB_USERNAME') ?: 'YOUR_USERNAME'
-  print('Release version [' + projectVersion + ']')
-}
+/* Project Information */
+def projectGroup = 'com.unideb.qsa'
+def projectVersion = project.getProperties().get('release.version') ?: 'RELEASE.VERSION.UNKNOWN'
+/* Secrets */
+// Note: Use your username and token
+def githubToken = System.getenv('GITHUB_TOKEN') ?: 'YOUR_TOKEN'
+def githubUsername = System.getenv('GITHUB_USERNAME') ?: 'YOUR_USERNAME'
+print('Release version [' + projectVersion + ']')
 
 apply plugin: 'maven-publish'
 apply plugin: 'checkstyle'
 apply plugin: 'java'
 apply plugin: 'java-library'
 
-repositories {
-  mavenLocal()
-  mavenCentral()
-  maven {
-    url 'https://jitpack.io'
-  }
+dependencies {
+  implementation libs.aws.lambda
+  implementation libs.gson
+  implementation libs.slf4j.api
+  testImplementation libs.mockito.core
+  testImplementation libs.mockito.testng
+  testImplementation libs.testng
 }
+
 
 checkstyle {
-  toolVersion = '9.2'
-  configFile = file("${rootDir}/support/code-formatting/checkstyle/checkstyle.xml")
-  configDirectory = file("${rootDir}/support/code-formatting/checkstyle/")
+  toolVersion = libs.versions.checkstyle.get()
   showViolations = true
   ignoreFailures = false
-}
-
-dependencies {
-  implementation 'com.google.code.gson:gson:2.8.9'
-  testImplementation 'org.mockito:mockito-core:4.1.0'
-  testImplementation 'org.testng:testng:7.4.0'
 }
 
 publishing {
   repositories {
     maven {
       name = 'GitHubPackages'
-      url = uri('https://maven.pkg.github.com/queueing-systems-assistance/qsa')
+      url = uri('https://maven.pkg.github.com/queueing-systems-assistance/qsa-config-resolver')
       credentials {
         username = githubUsername
         password = githubToken
