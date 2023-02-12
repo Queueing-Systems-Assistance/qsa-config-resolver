@@ -32,7 +32,6 @@ jobs:
           echo "RELEASE_VERSION:" "${RELEASE_VERSION}"
           echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_OUTPUT
           echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_OUTPUT
-          chmod +x gradlew
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -81,7 +80,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    needs: [ versioning, static-analysis ]
+    needs: [ build, static-analysis ]
     steps:
       - name: Setup Java
         uses: actions/setup-java@v3
