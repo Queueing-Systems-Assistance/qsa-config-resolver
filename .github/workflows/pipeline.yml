@@ -16,6 +16,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      BRANCH_NAME: ${{ steps.versioning.outputs.BRANCH_NAME }}
+      RELEASE_VERSION: ${{ steps.versioning.outputs.RELEASE_VERSION }}
     steps:
       - name: Versioning
         id: versioning
@@ -48,7 +51,9 @@ jobs:
           java-version: '17'
           cache: 'gradle'
       - name: Build
-        run: ./gradlew -x checkstyleMain -x checkstyleTest build -Prelease.version="${{ steps.versioning.outputs.RELEASE_VERSION }}" --no-daemon
+        run: |
+          chmod +x gradlew
+          ./gradlew -x checkstyleMain -x checkstyleTest build -Prelease.version="${{ needs.versioning.outputs.RELEASE_VERSION }}" --no-daemon
       - name: Save Artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -72,8 +77,9 @@ jobs:
           cache: 'gradle'
       - name: Checkstyle validation
         run: |
-          echo "Version: ${{ steps.versioning.outputs.RELEASE_VERSION }}"
-          ./gradlew checkstyleMain checkstyleTest -Prelease.version="${{steps.versioning.outputs.RELEASE_VERSION}}" --no-daemon
+          echo "Version: ${{ needs.versioning.outputs.RELEASE_VERSION }}"
+          chmod +x gradlew
+          ./gradlew checkstyleMain checkstyleTest -Prelease.version="${{needs.versioning.outputs.RELEASE_VERSION}}" --no-daemon
   release:
     if: contains( github.ref, 'master')
     runs-on: ubuntu-latest
@@ -93,7 +99,9 @@ jobs:
         with:
           name: qsa-config-resolver
       - name: Release Artifact
-        run: ./gradlew publish -Prelease.version="${{steps.versioning.outputs.RELEASE_VERSION}}" --no-daemon
+        run: |
+          chmod +x gradlew
+          ./gradlew publish -Prelease.version="${{needs.versioning.outputs.RELEASE_VERSION}}" --no-daemon
       #- name: Git Tagging
       #  run: |
       #    git config --global user.email "builds@github-ci.com"
