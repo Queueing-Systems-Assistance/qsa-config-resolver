@@ -104,7 +104,7 @@ jobs:
       - name: Release Artifact
         run: |
           chmod +x gradlew
-          ./gradlew publish -Prelease.version="${{needs.versioning.outputs.RELEASE_VERSION}}" --no-daemon
+          ./gradlew publish -Prelease.version="${{needs.versioning.outputs.RELEASE_VERSION}}" -Pci.token="${{secrets.CI_GITHUB_TOKEN}}" -Pci.username="${{secrets.CI_GITHUB_USERNAME}}" --no-daemon
       - name: Git Tagging
         run: |
           git config --global user.email "ci@github.com"

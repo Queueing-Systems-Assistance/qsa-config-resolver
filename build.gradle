@@ -25,8 +25,8 @@ publishing {
       name = 'GitHubPackages'
       url = uri('https://maven.pkg.github.com/queueing-systems-assistance/qsa-config-resolver')
       credentials {
-        username = project.getProperties().get('CI_GITHUB_USERNAME')
-        password = project.getProperties().get('CI_GITHUB_TOKEN')
+        username = project.getProperties().get('ci.username')
+        password = project.getProperties().get('ci.token')
       }
     }
   }
