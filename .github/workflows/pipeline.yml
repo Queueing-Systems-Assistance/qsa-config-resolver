@@ -110,5 +110,5 @@ jobs:
           git config --global user.email "ci@github.com"
           git config --global user.name "GitHub CI"
           git tag -a -f "${{needs.versioning.outputs.RELEASE_VERSION}}" -m "${{needs.versioning.outputs.RELEASE_VERSION}}"
-          git push -f "https://${CI_GITHUB_TOKEN}@github.com/${{env.GITHUB_REPOSITORY}}" refs/tags/"${{needs.versioning.outputs.RELEASE_VERSION}}"
+          git push -f "https://${{secrets.CI_GITHUB_TOKEN}}@github.com/${{env.GITHUB_REPOSITORY}}" refs/tags/"${{needs.versioning.outputs.RELEASE_VERSION}}"
       #- name: Jira Notify

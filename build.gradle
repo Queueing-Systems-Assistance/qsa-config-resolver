@@ -1,3 +1,7 @@
+plugins {
+  id("maven-publish")
+}
+
 apply plugin: 'maven-publish'
 apply plugin: 'checkstyle'
 apply plugin: 'java'
