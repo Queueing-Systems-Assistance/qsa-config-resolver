@@ -28,15 +28,8 @@ jobs:
         id: versioning
         shell: bash
         run: |
-          echo "Branch name: ${GITHUB_REF_NAME}"
-          echo "Build number: ${GITHUB_RUN_NUMBER}"
-          echo "Project Major version: ${{env.PROJECT_MAJOR_VERSION}}"
-          BRANCH_NAME=${GITHUB_HEAD_REF}
-          echo "Branch updated name: $BRANCH_NAME"
-          echo "Branch updated name: ${BRANCH_NAME}"
-          echo "Branch updated name: $(echo "${GITHUB_HEAD_REF}" | sed s#/#-#g | sed s/[.]/_/g | sed s#-#_#g | awk '{print $1""}') || exit"
           if [[ "${BRANCH_NAME}" != "master" ]]; then
-            BRANCH_NAME=$(echo "${GITHUB_HEAD_REF}" | sed s#/#-#g | sed s/[.]/_/g | sed s#-#_#g | awk '{print $1""}') || exit
+            BRANCH_NAME=$(echo "$GITHUB_REF_NAME" | sed s#/#-#g | sed s/[.]/_/g | sed s#-#_#g | awk '{print $1""}')
           fi
           RELEASE_VERSION=${{env.PROJECT_MAJOR_VERSION}}.${{env.PROJECT_MINOR_VERSION}}.${GITHUB_RUN_NUMBER}
           if [[ "${BRANCH_NAME}" != "master" ]]; then
