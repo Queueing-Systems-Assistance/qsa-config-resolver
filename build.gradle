@@ -1,16 +1,3 @@
-plugins {
-  id 'maven-publish'
-}
-
-/* Project Information */
-def projectGroup = 'com.unideb.qsa'
-def projectVersion = project.getProperties().get('release.version') ?: 'RELEASE.VERSION.UNKNOWN'
-/* Secrets */
-// Note: Use your username and token
-def githubToken = System.getenv('GITHUB_TOKEN') ?: 'YOUR_TOKEN'
-def githubUsername = System.getenv('GITHUB_USERNAME') ?: 'YOUR_USERNAME'
-print('Release version [' + projectVersion + ']')
-
 apply plugin: 'maven-publish'
 apply plugin: 'checkstyle'
 apply plugin: 'java'
@@ -38,8 +25,8 @@ publishing {
       name = 'GitHubPackages'
       url = uri('https://maven.pkg.github.com/queueing-systems-assistance/qsa-config-resolver')
       credentials {
-        username = githubUsername
-        password = githubToken
+        username = project.getProperties().get('CI_GITHUB_USERNAME')
+        password = project.getProperties().get('CI_GITHUB_TOKEN')
       }
     }
   }
@@ -51,8 +38,8 @@ publishing {
 }
 
 sourceCompatibility = '17'
-group = projectGroup
-version = projectVersion
+version = 'com.unideb.qsa'
+group = project.getProperties().get('release.version') ?: 'RELEASE.VERSION.UNKNOWN'
 
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'

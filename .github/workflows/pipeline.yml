@@ -86,7 +86,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    needs: [ build, static-analysis ]
+    needs: [ versioning, build, static-analysis ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
