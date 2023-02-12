@@ -38,8 +38,8 @@ publishing {
 }
 
 sourceCompatibility = '17'
-version = 'com.unideb.qsa'
-group = project.getProperties().get('release.version') ?: 'RELEASE.VERSION.UNKNOWN'
+group = 'com.unideb.qsa'
+version = project.getProperties().get('release.version') ?: 'RELEASE.VERSION.UNKNOWN'
 
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
