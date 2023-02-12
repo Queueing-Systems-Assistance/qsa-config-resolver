@@ -1,6 +1,7 @@
 name: CI/CD
 
 env:
+  TARGET_BRANCH: master
   PROJECT_MAJOR_VERSION: 1
   PROJECT_MINOR_VERSION: 1
 
@@ -24,11 +25,11 @@ jobs:
         id: versioning
         shell: bash
         run: |
-          if [[ "${BRANCH_NAME}" != "master" ]]; then
+          if [[ "${BRANCH_NAME}" != "${{env.TARGET_BRANCH}}" ]]; then
             BRANCH_NAME=$(echo "$GITHUB_REF_NAME" | sed s#/#-#g | sed s/[.]/_/g | sed s#-#_#g | awk '{print $1""}')
           fi
           RELEASE_VERSION=${{env.PROJECT_MAJOR_VERSION}}.${{env.PROJECT_MINOR_VERSION}}.${GITHUB_RUN_NUMBER}
-          if [[ "${BRANCH_NAME}" != "master" ]]; then
+          if [[ "${BRANCH_NAME}" != "${{env.TARGET_BRANCH}}" ]]; then
             RELEASE_VERSION="${RELEASE_VERSION}_${BRANCH_NAME}"
           fi
           echo "BRANCH_NAME:" "${BRANCH_NAME}"
@@ -77,17 +78,18 @@ jobs:
           cache: 'gradle'
       - name: Checkstyle validation
         run: |
-          echo "Version: ${{ needs.versioning.outputs.RELEASE_VERSION }}"
           chmod +x gradlew
           ./gradlew checkstyleMain checkstyleTest -Prelease.version="${{needs.versioning.outputs.RELEASE_VERSION}}" --no-daemon
   release:
-    if: contains( github.ref, 'master')
+    #if: contains( github.ref, '${{env.TARGET_BRANCH}}')
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     needs: [ build, static-analysis ]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -98,14 +100,15 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: qsa-config-resolver
+          path: ./build/
       - name: Release Artifact
         run: |
           chmod +x gradlew
           ./gradlew publish -Prelease.version="${{needs.versioning.outputs.RELEASE_VERSION}}" --no-daemon
-      #- name: Git Tagging
-      #  run: |
-      #    git config --global user.email "builds@github-ci.com"
-      #    git config --global user.name "GitHub CI"
-      #    git tag -a -f "${{steps.versioning.outputs.RELEASE_VERSION}}" -m "${{steps.versioning.outputs.RELEASE_VERSION}}"
-      #    git push -f "https://${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}" refs/tags/"${{steps.versioning.outputs.RELEASE_VERSION}}"
+      - name: Git Tagging
+        run: |
+          git config --global user.email "ci@github.com"
+          git config --global user.name "GitHub CI"
+          git tag -a -f "${{needs.versioning.outputs.RELEASE_VERSION}}" -m "${{needs.versioning.outputs.RELEASE_VERSION}}"
+          git push -f "https://${CI_GITHUB_TOKEN}@github.com/${{env.GITHUB_REPOSITORY}}" refs/tags/"${{needs.versioning.outputs.RELEASE_VERSION}}"
       #- name: Jira Notify
